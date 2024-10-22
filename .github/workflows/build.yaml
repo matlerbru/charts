@@ -1,0 +1,28 @@
+name: Build helm package
+run-name: ${{ github.actor }} is testing out github Actions 🚀
+on: [push]
+
+jobs:
+  list-charts:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+      - name: helm template default valus
+        run: helm template ${GITHUB_REF##*/} ${GITHUB_REF##*/} -f ${GITHUB_REF##*/}/values.yaml
+
+      - name: Login to container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.TOKEN}}
+
+      - name: Helm package
+        run: helm package ./${GITHUB_REF##*/}
+
+      - name: Push helm chart to registry
+        run: helm push ${GITHUB_REF##*/}.tgz oci://ghcr.io/matlerbru
