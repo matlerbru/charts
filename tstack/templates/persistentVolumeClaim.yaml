@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-transmission-jellyfin-data
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: {{ .Values.persistentVolumeClaim.data.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.data.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-transmission-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: {{ .Values.persistentVolumeClaim.transmission.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.transmission.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-jellyfin-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: {{ .Values.persistentVolumeClaim.jellyfinConfig.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.jellyfinConfig.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-jellyfin-cache
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: {{ .Values.persistentVolumeClaim.jellyfinCache.storageClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.jellyfinCache.size }}
