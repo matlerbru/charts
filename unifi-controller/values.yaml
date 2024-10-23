@@ -1,0 +1,15 @@
+persistentVolumeClaim:
+  config:
+    storageClass: synology
+    size: 1Gi
+  data:
+    storageClass: synology-backup
+    size: 5Gi
+  mongoDbData:
+    storageClass: synology-backup
+    size: 5Gi
+
+secret:
+  existingkey:
+    enabled: false
+    name: ""
