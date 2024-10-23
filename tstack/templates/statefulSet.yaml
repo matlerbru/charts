@@ -20,19 +20,16 @@ spec:
         - name: OPENVPN_PROVIDER
           value: EXPRESSVPN
         - name: OPENVPN_CONFIG
-          valueFrom:
-            secretKeyRef:
-              name: expressvpn-credentials
-              key: config
+          value: {{ .Values.openvpnConfig }}
         - name: OPENVPN_USERNAME
           valueFrom:
             secretKeyRef:
-              name: expressvpn-credentials
+              name: tstack-credentials
               key: username
         - name: OPENVPN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: expressvpn-credentials
+              name: tstack-credentials
               key: password
         securityContext:
           privileged: true

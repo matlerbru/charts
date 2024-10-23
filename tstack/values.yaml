@@ -1,3 +1,4 @@
+
 persistentVolumeClaim:
   transmission:
     storageClass: synology-backup
@@ -17,3 +18,5 @@ ingress:
     host: transmission.priv
   jellyfin:
     host: jellyfin.priv
+
+openvpnConfig: my_expressvpn_switzerland_-_2_udp
