@@ -50,6 +50,11 @@ spec:
           mountPath: /var/lib/unifi
         - name: config
           mountPath: /config
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000    
+      securityContext:
+        fsGroup: 1000
       volumes:
       - name: config
         persistentVolumeClaim:
