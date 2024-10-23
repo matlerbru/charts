@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing out github Actions 🚀
 on: [push]
 
 jobs:
-  list-charts:
+  push-chart:
     runs-on: ubuntu-latest
     steps:
 
@@ -25,4 +25,4 @@ jobs:
         run: helm package ./${GITHUB_REF##*/}
 
       - name: Push helm chart to registry
-        run: helm push ${GITHUB_REF##*/}.tgz oci://ghcr.io/matlerbru
+        run: helm push ${GITHUB_REF##*/}-$(helm show chart ${GITHUB_REF##*/} | grep version | cut -d' ' -f2-).tgz oci://ghcr.io/matlerbru/charts

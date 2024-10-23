@@ -1,0 +1,19 @@
+persistentVolumeClaim:
+  transmission:
+    storageClass: synology-backup
+    size: 100Mi
+  jellyfinConfig:
+    storageClass: synology-backup
+    size: 1Gi
+  jellyfinCache:
+    storageClass: synology-backup
+    size: 1Gi
+  data: 
+    storageClass: synology
+    size: 2000Gi
+
+ingress:
+  transmission:
+    host: transmission.priv
+  jellyfin:
+    host: jellyfin.priv
