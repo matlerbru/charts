@@ -50,11 +50,17 @@ spec:
           mountPath: /var/lib/unifi
         - name: config
           mountPath: /config
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000    
-      securityContext:
-        fsGroup: 1000
+      initContainers:
+        - name: init-permissions
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              chown -R 1000:1000 /config/data && chmod -R 755 /config/data
+          volumeMounts:
+            - name: data
+              mountPath: /config/data
       volumes:
       - name: config
         persistentVolumeClaim:
