@@ -13,6 +13,10 @@ persistentVolumeClaim:
     storageClass: synology
     size: 2000Gi
 
+service:
+  transmission:
+    type: LoadBalancer
+
 ingress:
   transmission:
     host: transmission.priv
