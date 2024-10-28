@@ -5,10 +5,8 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-transmission
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.ingress.allowAddresses }}
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-ip-whitelist@kubernetescrd
-  {{- end }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: {{ .Values.ingress.transmission.host }}
