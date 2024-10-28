@@ -27,6 +27,8 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-jellyfin
   namespace: {{ .Release.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: {{ .Values.ingress.jellyfin.host }}
