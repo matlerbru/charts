@@ -16,6 +16,8 @@ spec:
       containers:
       - name: transmission
         image: haugene/transmission-openvpn
+        ports:
+          - containerPort: 9091
         env:
         - name: OPENVPN_PROVIDER
           value: EXPRESSVPN
