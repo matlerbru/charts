@@ -23,7 +23,7 @@ spec:
             name: {{ .Release.Name }}-variables
         volumeMounts:
         - name: {{ .Release.Name }}-config
-          mountPath: /custom-metrics-exporter/config.yaml
+          mountPath: /custom-metrics-exporter/
           subPath: config.yaml
       {{- if .Values.image.pullSecret }}
       imagePullSecrets: 
