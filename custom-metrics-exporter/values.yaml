@@ -1,0 +1,12 @@
+
+image:
+  registry: ghcr.io
+  name: matlerbru/custom-metrics-exporter
+  tag: latest
+
+config:
+  directory_usage:
+  - host: synology
+    path: /volume3/k8sCluster
+  - host: synology
+    path: /volume3/k8sCluster-backup
