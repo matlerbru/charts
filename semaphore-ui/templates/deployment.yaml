@@ -45,6 +45,9 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-credentials
               key: email
+        command: 
+        - semaphore
+        - server
       initContainers:
         - name: init-permissions
           image: busybox:latest
