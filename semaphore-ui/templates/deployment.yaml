@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: semaphore-ui
+        image: semaphoreui/semaphore:v2.10.32
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/semaphore
+        - name: config
+          mountPath: /etc/semaphore
+        env:
+        - name: SEMAPHORE_DB_DIALECT
+          value: bolt
+        - name: SEMAPHORE_ADMIN_NAME
+          value: admin
+        - name: SEMAPHORE_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: username
+        - name: SEMAPHORE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: password
+        - name: SEMAPHORE_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: email
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config
