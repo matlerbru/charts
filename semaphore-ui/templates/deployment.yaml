@@ -46,8 +46,13 @@ spec:
               name: {{ .Release.Name }}-credentials
               key: email
         command: 
-        - semaphore
-        - server
+            - sh
+            - "-c"
+            - |
+              {{- if (hasKey .Values "pipPackages") }}
+              python -m pip install {{ range .Values.pipPackages }}{{ . }} {{ end }}
+              {{- end }}
+              semaphore server
       initContainers:
         - name: init-permissions
           image: busybox:latest
@@ -55,9 +60,6 @@ spec:
             - sh
             - "-c"
             - |
-              {{- if (hasKey .Values "pipPackages") }}
-              python -m pip install {{ range .Values.pipPackages }}{{ . }} {{ end }}
-              {{- end }}
               chown 1001:1001 /var/lib/samaphore
               chmod 755 /var/lib/samaphore
               chown 1001:1001 /etc/semaphore
