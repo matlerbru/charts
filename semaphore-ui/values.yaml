@@ -8,3 +8,6 @@ persistentVolumeClaim:
   work:
     storageClass: ""
     size: 10Gi
+
+pipPackages:
+- paramiko
