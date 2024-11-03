@@ -24,6 +24,10 @@ spec:
         env:
         - name: SEMAPHORE_DB_DIALECT
           value: bolt
+        - name: SEMAPHORE_INTERFACE
+          value: 0.0.0.0
+        - name: SEMAPHORE_WEB_ROOT
+          value: http://{{ .Values.hostname }}
         - name: SEMAPHORE_ADMIN_NAME
           value: admin
         - name: SEMAPHORE_ADMIN
