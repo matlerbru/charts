@@ -1,0 +1,31 @@
+
+timeZone: Europe/Copenhagen
+
+#zigbee:
+#  serial:
+#    port: "/tty/ACM0"
+#    baudrate: 115200
+#  network:
+#    address: "192.168.1.1"
+#    port: 6638
+
+mqtt:
+  address: mqtt://192.168.1.202:1883
+
+adapterDelay: 200
+
+ingress:
+  enabled: true
+  hostname: zigbee2mqtt.priv
+
+node: alteret.worker01
+
+tolerations:
+- key: "critical"
+  operator: "Exists"
+  effect: "NoSchedule"
+
+persistentVolumeClaim:
+    storageClass: ""
+    size: 1Gi
+
