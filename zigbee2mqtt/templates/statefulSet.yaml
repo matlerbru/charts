@@ -22,7 +22,7 @@ spec:
         - name: TZ
           value: {{ .Values.timeZone }}
         - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
-          value: {{ .Values.mqtt.address }}
+          value: mqtt://{{ .Values.mqtt.address }}:{{ .Values.mqtt.port }}
         {{- if hasKey .Values.zigbee "serial" }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
           value: {{ .Values.zigbee.serial.port }}
@@ -47,6 +47,12 @@ spec:
           mountPath: /app/data
         securityContext:
           privileged: true
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+      {{- range .Values.tolerations }}
+{{- . | toYaml | nindent 8 }}
+      {{- end }}
+      {{- end }}
       volumes:
       {{- if hasKey .Values.zigbee "serial" }}
       - name: {{ .Release.Name }}-udev

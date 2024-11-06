@@ -10,15 +10,14 @@ timeZone: Europe/Copenhagen
 #    port: 6638
 
 mqtt:
-  address: mqtt://192.168.1.202:1883
+  address: ""
+  port: 1883
 
 adapterDelay: 200
 
 ingress:
-  enabled: true
-  hostname: zigbee2mqtt.priv
-
-node: alteret.worker01
+  enabled: false
+  hostname: ""
 
 tolerations:
 - key: "critical"
