@@ -49,9 +49,7 @@ spec:
           privileged: true
       {{- if hasKey .Values "tolerations" }}
       tolerations:
-      {{- range .Values.tolerations }}
-{{- . | toYaml | nindent 8 }}
-      {{- end }}
+      {{- .Values.tolerations | toYaml | nindent 8 }}
       {{- end }}
       volumes:
       {{- if hasKey .Values.zigbee "serial" }}

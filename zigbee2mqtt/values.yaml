@@ -19,10 +19,7 @@ ingress:
   enabled: false
   hostname: ""
 
-tolerations:
-- key: "critical"
-  operator: "Exists"
-  effect: "NoSchedule"
+tolerations: []
 
 persistentVolumeClaim:
     storageClass: ""
