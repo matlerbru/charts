@@ -28,7 +28,7 @@ spec:
           value: {{ .Values.zigbee.serial.port }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE
           value: {{ .Values.zigbee.serial.baudrate | quote }}
-        {{- else }}
+        {{- else if hasKey .Values.zigbee "network" }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
           value: tcp://{{ .Values.zigbee.network.address }}:{{ .Values.zigbee.network.port }}
         {{- end }}

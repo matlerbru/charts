@@ -1,7 +1,7 @@
 
 timeZone: Europe/Copenhagen
 
-#zigbee:
+zigbee: {}
 #  serial:
 #    port: "/tty/ACM0"
 #    baudrate: 115200
