@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
@@ -31,6 +31,10 @@ spec:
         - name: ha-config
           mountPath: /config/configuration.yaml
           subPath: configuration.yaml
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+      {{- .Values.tolerations | toYaml | nindent 8 }}
+      {{- end }}
       volumes:
       - name: ha-config
         configMap:
