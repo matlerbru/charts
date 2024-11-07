@@ -1,0 +1,5 @@
+persistentVolumeClaim:
+    storageClass: synology-backup
+    size: 10Gi
+
+config: ""

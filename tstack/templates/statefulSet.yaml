@@ -16,23 +16,22 @@ spec:
       containers:
       - name: transmission
         image: haugene/transmission-openvpn
+        ports:
+          - containerPort: 9091
         env:
         - name: OPENVPN_PROVIDER
           value: EXPRESSVPN
         - name: OPENVPN_CONFIG
-          valueFrom:
-            secretKeyRef:
-              name: expressvpn-credentials
-              key: config
+          value: {{ .Values.openvpnConfig }}
         - name: OPENVPN_USERNAME
           valueFrom:
             secretKeyRef:
-              name: expressvpn-credentials
+              name: tstack-credentials
               key: username
         - name: OPENVPN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: expressvpn-credentials
+              name: tstack-credentials
               key: password
         securityContext:
           privileged: true
@@ -70,6 +69,8 @@ spec:
       containers:
       - name: jellyfin
         image: jellyfin/jellyfin:10.9.3
+        ports:
+          - containerPort: 8096
         volumeMounts:
         - name : data
           mountPath : /data
