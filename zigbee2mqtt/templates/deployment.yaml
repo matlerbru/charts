@@ -22,7 +22,7 @@ spec:
         - name: TZ
           value: {{ .Values.timeZone }}
         - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
-          value: mqtt://{{ .Values.mqtt.address }}:{{ .Values.mqtt.port }}
+          value: {{ .Values.mqtt.address }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
           value: {{ .Values.zigbee.serial.port }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE
@@ -60,6 +60,3 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-data
-{{- if and .Values.zigbee.serial .Values.zigbee.network }}
-{{- fail "Only one of .Values.zigbee.serial or .Values.zigbee.network should be specified, not both." }}
-{{- end }}
