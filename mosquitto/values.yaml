@@ -1,0 +1,27 @@
+persistentVolumeClaim:
+    storageClass: synology
+    size: 5Gi
+
+tolerations:
+- key: "critical"
+  operator: "Exists"
+  effect: "NoSchedule"
+
+config: |
+  ##
+  # defaults
+  listener 1883
+  user root
+
+  ##
+  # logging
+  log_dest stdout
+
+  ##
+  # datastore
+  persistence true
+  persistence_location mosquitto/data/
+
+  ##
+  # auth
+  allow_anonymous true

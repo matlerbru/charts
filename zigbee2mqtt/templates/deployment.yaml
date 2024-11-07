@@ -23,15 +23,12 @@ spec:
           value: {{ .Values.timeZone }}
         - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
           value: mqtt://{{ .Values.mqtt.address }}:{{ .Values.mqtt.port }}
-        {{- if hasKey .Values.zigbee "serial" }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
           value: {{ .Values.zigbee.serial.port }}
         - name: ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE
           value: {{ .Values.zigbee.serial.baudrate | quote }}
-        {{- else if hasKey .Values.zigbee "network" }}
-        - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
-          value: tcp://{{ .Values.zigbee.network.address }}:{{ .Values.zigbee.network.port }}
-        {{- end }}
+        - name: ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER
+          value: {{ .Values.zigbee.serial.adapter }}
         - name: ZIGBEE2MQTT_CONFIG_ADVANCED_TRANSMIT_POWER
           value: "20"
         - name: ZIGBEE2MQTT_CONFIG_ADVANCED_ADAPTER_DELAY
