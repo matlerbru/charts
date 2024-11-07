@@ -6,6 +6,7 @@ zigbee:
     port: "/tty/ACM0"
     baudrate: 115200
     adapter: ezsp
+    network: false
 
 mqtt:
   address: ""

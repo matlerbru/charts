@@ -34,7 +34,7 @@ spec:
         - name: ZIGBEE2MQTT_CONFIG_ADVANCED_ADAPTER_DELAY
           value: {{ .Values.adapterDelay | quote }}
         volumeMounts:
-        {{- if hasKey .Values.zigbee "serial" }}
+        {{- if (not .Values.serial.network) }}
         - name: {{ .Release.Name }}-udev    
           mountPath: /run/udev
         - name: serial
@@ -49,7 +49,7 @@ spec:
       {{- .Values.tolerations | toYaml | nindent 8 }}
       {{- end }}
       volumes:
-      {{- if hasKey .Values.zigbee "serial" }}
+      {{- if (not .Values.serial.network) }}
       - name: {{ .Release.Name }}-udev
         hostPath:
           path: /run/udev
