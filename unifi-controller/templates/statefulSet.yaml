@@ -287,7 +287,7 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: mongo-db-data
+          claimName: {{ .Release.Name }}-mongo-db-data
       - name: init-script
         configMap:
           name: mongo-init-script
