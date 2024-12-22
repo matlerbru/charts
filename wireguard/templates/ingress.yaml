@@ -15,5 +15,5 @@ spec:
           service:
             name: {{ .Release.Name }}-ui
             port:
-              number: 9000
+              number: 5000
 {{- end }}

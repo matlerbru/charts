@@ -22,5 +22,5 @@ spec:
     app: {{ .Release.Name }}
   ports:
     - protocol: TCP
-      port: 9000
-      targetPort: 9000
+      port: 5000
+      targetPort: 5000
