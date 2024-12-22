@@ -34,7 +34,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.credentials.admin.secretName }}
               key: {{ .Values.credentials.admin.passwordKey }}
-        - name: WGUI_SERVER_LISTEN_PORT
+        - name: WGUI_ENDPOINT_ADDRESS
           value: {{ .Values.endpoint }}
         - name: WGUI_DNS
           value: {{ .Values.dnsAddress }}
