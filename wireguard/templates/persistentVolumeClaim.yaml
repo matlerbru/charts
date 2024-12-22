@@ -7,5 +7,17 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.size }}
-  storageClassName: {{ .Values.persistentVolumeClaim.storageClass }}
+      storage: {{ .Values.persistentVolumeClaim..config.size }}
+  storageClassName: {{ .Values.persistentVolumeClaim.config.storageClass }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-db
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.database.size }}
+  storageClassName: {{ .Values.persistentVolumeClaim.database.storageClass }}

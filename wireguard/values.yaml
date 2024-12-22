@@ -3,13 +3,22 @@ postUpScript: iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTI
 postDownScript: iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; sysctl -w -q net.ipv4.ip_forward=0
 
 persistentVolumeClaim:
-  storageClass: ""
-  size: 1Gi
+  config:
+    storageClass: ""
+    size: 1Gi
+  database:
+    storageClass: ""
+    size: 1Gi
 
-configuration:
-  secret:
-    name: wireguard
-    key: wg0.conf
-  connectionIp: ""
+credentials:
+  admin:
+    secretName: wireguard-credentials
+    usernameKey: username
+    passwordKey: password
 
-peers: [] 
+ingress:
+  enabled: true
+  hostname: ""
+
+endpoint: ""
+dnsAddress: 192.168.0.1
