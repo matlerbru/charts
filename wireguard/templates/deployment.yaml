@@ -42,3 +42,15 @@ spec:
           value: {{ .Values.postUpScript }}
         - name: WGUI_SERVER_POST_DOWN_SCRIPT
           value: {{ .Values.postDownScript }}
+        volumeMounts:
+        - name : config
+          mountPath : /etc/wireguard
+        - name: database
+          mountPath: /app/db
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config
+      - name: database
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-db
