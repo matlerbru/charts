@@ -6,3 +6,7 @@ persistentVolumeClaim:
     size: 1Gi
 
 config: ""
+
+service:
+    loadBalancer:
+        enabled: true
