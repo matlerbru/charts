@@ -10,3 +10,7 @@ config: ""
 service:
     loadBalancer:
         enabled: true
+
+tolerations: []
+
+nodeSelector: {}
