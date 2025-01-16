@@ -28,6 +28,7 @@ spec:
         - name: config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
+      {{- if hasKey .Values "tolerations" }}
       tolerations:
       {{- .Values.tolerations | toYaml | nindent 8 }}
       {{- end }}
