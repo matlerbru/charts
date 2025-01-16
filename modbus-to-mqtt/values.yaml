@@ -25,3 +25,5 @@ config:
     long_press_time: 1000
 
 tolerations: []
+
+nodeSelector: {}
