@@ -20,6 +20,8 @@ ingress:
 
 tolerations: []
 
+nodeSelector: {}
+
 persistentVolumeClaim:
     storageClass: ""
     size: 1Gi
