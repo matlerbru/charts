@@ -24,7 +24,7 @@ spec:
         image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
         env:
         - name: MODBUS_TO_MQTT_CONFIG_PATH
-          value: "/config"
+          value: "/config.yaml"
         volumeMounts:
         - name: {{ .Release.Name }}-config
           mountPath: /config.yaml
