@@ -2,6 +2,8 @@ image:
   registry: ghcr.io
   name: matlerbru/go-modbus-to-mqtt
   tag: latest
+  imagePullPolicy: always
+
 
 config:
 

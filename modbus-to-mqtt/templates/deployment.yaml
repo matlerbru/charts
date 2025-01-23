@@ -22,6 +22,7 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: MODBUS_TO_MQTT_CONFIG_PATH
           value: "/config.yaml"
