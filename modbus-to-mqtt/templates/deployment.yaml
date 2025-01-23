@@ -22,9 +22,12 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        env:
+        - name: MODBUS_TO_MQTT_CONFIG_PATH
+          value: "/config"
         volumeMounts:
         - name: {{ .Release.Name }}-config
-          mountPath: /modbus-to-mqtt/config.yaml
+          mountPath: /config.yaml
           subPath: config.yaml
       {{- if hasKey .Values "tolerations" }}
       tolerations:
