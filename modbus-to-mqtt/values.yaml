@@ -1,28 +1,27 @@
 image:
   registry: ghcr.io
-  name: matlerbru/modbus-to-mqtt
+  name: matlerbru/go-modbus-to-mqtt
   tag: latest
 
 config:
-  log_level: INFO
 
   mqtt:
-    address: 192.168.1.202
+    address: ""
     port: 1883
-    repeat_time: 10
+    qos: 2
 
-    main_topic: modbus-to-mqtt
+    mainTopic: modbus-to-mqtt
 
-  fieldbus:
-    address: "192.168.1.12"
+  modbus:
+    address: ""
+    port: 502
 
-    read:
-    - type: coil
-      start: 0
-      count: 32
+    blocks: []
 
-    scan_time: 80
-    long_press_time: 1000
+    scanInterval: 80
+
+  metrics:
+    enabled: false
 
 tolerations: []
 
