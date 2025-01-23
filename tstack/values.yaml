@@ -1,0 +1,34 @@
+
+persistentVolumeClaim:
+  transmission:
+    storageClass: synology-backup
+    size: 100Mi
+  jellyfinConfig:
+    storageClass: synology-backup
+    size: 1Gi
+  jellyfinCache:
+    storageClass: synology-backup
+    size: 1Gi
+  data: 
+    storageClass: synology
+    size: 2000Gi
+
+service:
+  transmission:
+    type: LoadBalancer
+
+ingress:
+  transmission:
+    host: transmission-paaaabaaaaa.priv
+  jellyfin:
+    host: jellyfin-paaaaaaaaadaaaa.priv
+
+networkPolicy:
+  allowedRanges:
+    - 192.168.1.33/32
+    - 192.168.1.31/32
+    - 192.168.1.32/32
+  disallowedRanges: 
+    - 192.168.1.0/24
+
+openvpnConfig: my_expressvpn_switzerland_-_2_udp

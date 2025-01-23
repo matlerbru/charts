@@ -1,0 +1,40 @@
+
+{{- if .Values.ingress.transmission.host }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-transmission
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.transmission.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-transmission
+            port:
+              number: 9091
+---
+{{- end }}
+{{- if .Values.ingress.jellyfin.host }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-jellyfin
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.jellyfin.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-jellyfin
+            port:
+              number: 8096
+{{- end }}

@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-transmission-allow-from-ips
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-transmission
+  policyTypes:
+    - Ingress
+  ingress:
+    {{ range .Values.networkPolicy.allowedRanges }}
+    - from:
+        - ipBlock:
+            cidr: {{ . }}
+    {{- end }}
+    - from:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            {{ if (gt (len .Values.networkPolicy.disallowedRanges) 0) }}
+            except:
+              {{- range .Values.networkPolicy.disallowedRanges }}
+              - {{ . }}
+              {{- end }}
+            {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-jellyfin-allow-from-ips
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-jellyfin
+  policyTypes:
+    - Ingress
+  ingress:
+    {{ range .Values.networkPolicy.allowedRanges }}
+    - from:
+        - ipBlock:
+            cidr: {{ . }}
+    {{- end }}
+    - from:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            {{ if (gt (len .Values.networkPolicy.disallowedRanges) 0) }}
+            except:
+              {{- range .Values.networkPolicy.disallowedRanges }}
+              - {{ . }}
+              {{- end }}
+            {{- end }}

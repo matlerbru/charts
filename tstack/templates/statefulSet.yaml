@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-transmission
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-transmission
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-transmission
+    spec:
+      containers:
+      - name: transmission
+        image: haugene/transmission-openvpn
+        ports:
+          - containerPort: 9091
+        env:
+        - name: OPENVPN_PROVIDER
+          value: EXPRESSVPN
+        - name: OPENVPN_CONFIG
+          value: {{ .Values.openvpnConfig }}
+        - name: OPENVPN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: tstack-credentials
+              key: username
+        - name: OPENVPN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tstack-credentials
+              key: password
+        securityContext:
+          privileged: true
+          runAsUser: 0
+          capabilities:
+            add: ["NET_ADMIN","NET_RAW"]
+        volumeMounts:
+        - name : data
+          mountPath : /data
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-transmission-jellyfin-data
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-transmission-config
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-jellyfin
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-jellyfin
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-jellyfin
+    spec:
+      containers:
+      - name: jellyfin
+        image: jellyfin/jellyfin:10.9.3
+        ports:
+          - containerPort: 8096
+        volumeMounts:
+        - name : data
+          mountPath : /data
+        - name: config
+          mountPath: /config
+        - name: cache
+          mountPath: /cache
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-transmission-jellyfin-data
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-jellyfin-config
+      - name: cache
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-jellyfin-cache
