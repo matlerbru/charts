@@ -8,3 +8,7 @@ metadata:
 data:
   config.yaml: |
     {{- .Values.config | toYaml | nindent 4 }}
+
+    metrics:
+      enabled: {{  .Values.metrics.enabled }}
+

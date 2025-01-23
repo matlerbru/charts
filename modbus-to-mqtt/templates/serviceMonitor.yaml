@@ -13,7 +13,7 @@ spec:
   endpoints:
     - port: metrics
       path: /metrics
-      interval: 60s
+      interval: {{ .Values.metrics.interval }}
       scrapeTimeout: 10s
       scheme: http
 {{- end }}
