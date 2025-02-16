@@ -1,4 +1,3 @@
-
 persistentVolumeClaim:
   transmission:
     storageClass: synology-backup
@@ -9,7 +8,7 @@ persistentVolumeClaim:
   jellyfinCache:
     storageClass: synology-backup
     size: 1Gi
-  data: 
+  data:
     storageClass: synology
     size: 2000Gi
 
@@ -19,16 +18,12 @@ service:
 
 ingress:
   transmission:
-    host: transmission-paaaabaaaaa.priv
+    host: ""
   jellyfin:
-    host: jellyfin-paaaaaaaaadaaaa.priv
+    host: ""
 
-networkPolicy:
-  allowedRanges:
-    - 192.168.1.33/32
-    - 192.168.1.31/32
-    - 192.168.1.32/32
-  disallowedRanges: 
-    - 192.168.1.0/24
-
-openvpnConfig: my_expressvpn_switzerland_-_2_udp
+openvpn:
+  # Find at:
+  # https://haugene.github.io/docker-transmission-openvpn/supported-providers/
+  provider: ""
+  config: ""
