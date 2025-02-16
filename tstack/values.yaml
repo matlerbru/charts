@@ -16,10 +16,6 @@ service:
   transmission:
     type: LoadBalancer
 
-networkPolicy:
-  allowedRanges: []
-  disallowedRanges: []
-
 ingress:
   transmission:
     host: ""

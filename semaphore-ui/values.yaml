@@ -1,0 +1,13 @@
+
+hostname: semaphore.priv
+
+persistentVolumeClaim:
+  config:
+    storageClass: ""
+    size: 1Gi
+  work:
+    storageClass: ""
+    size: 10Gi
+
+pipPackages:
+- paramiko
