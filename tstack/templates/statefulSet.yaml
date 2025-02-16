@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: "{{ .Release.Name }}-transmission"
-  namespace: { { .Release.Namespace } }
+  namespace: "{{ .Release.Namespace }}"
 spec:
   replicas: 1
   selector:
