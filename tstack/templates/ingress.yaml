@@ -5,6 +5,10 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-transmission
   namespace: {{ .Release.Namespace }}
+  {{- with .Values.ingress.transmission.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   rules:
   - host: {{ .Values.ingress.transmission.host }}
@@ -25,6 +29,10 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-jellyfin
   namespace: {{ .Release.Namespace }}
+  {{- with .Values.ingress.transmission.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   rules:
   - host: {{ .Values.ingress.jellyfin.host }}

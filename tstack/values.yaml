@@ -4,8 +4,10 @@ service:
 
 ingress:
   transmission:
+    annotations: {}
     host: ""
   jellyfin:
+    annotations: {}
     host: ""
 
 openvpn:
