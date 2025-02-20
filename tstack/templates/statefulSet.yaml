@@ -76,8 +76,10 @@ spec:
               mountPath: /data
             - name: config
               mountPath: /config
+            {{ if .Values.persistence.jellyfinCache.enabled }}
             - name: cache
               mountPath: /cache
+            {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -85,6 +87,8 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: "{{ .Release.Name }}-jellyfin-config"
+        {{ if .Values.persistence.jellyfinCache.enabled }}
         - name: cache
           persistentVolumeClaim:
             claimName: "{{ .Release.Name }}-jellyfin-cache"
+        {{- end }}
