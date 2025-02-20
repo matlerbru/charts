@@ -1,7 +1,13 @@
-persistentVolumeClaim:
-    storageClass: synology-backup
-    size: 10Gi
+persistence:
+    enabled: true
+    storageClass: ""
+    size: 1Gi
 
 tolerations: []
+
+ingress:
+    enabled: false
+    annotations: {}
+    host: ""
 
 config: ""
