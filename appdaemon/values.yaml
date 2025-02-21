@@ -1,0 +1,15 @@
+tolerations: []
+
+persistence:
+    enabled: false
+    storageClass: ""
+    size: 1Gi
+
+homeAssistant:
+    url: http://home-assistant.priv
+    port: 80
+    token:
+        secret: ""
+        key: ""
+---
+
