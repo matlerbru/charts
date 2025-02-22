@@ -1,10 +1,5 @@
 tolerations: []
 
-persistence:
-    enabled: false
-    storageClass: ""
-    size: 1Gi
-
 ingress:
     enabled: false
     annotations: []
