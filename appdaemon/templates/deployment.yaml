@@ -39,11 +39,9 @@ spec:
         - -c
         - |
           set -e
-          echo "git clone https://$USERNAME:$TOKEN@$GIT_REPO /repo"
-          git clone https://$USERNAME:$TOKEN@$GIT_REPO /repo
+          git clone https://$USERNAME:$TOKEN@{{ .Values.config.fromRepo.repo }} /repo
           cd /repo
-          ls /repo
-          git checkout $GIT_REPO
+          git checkout {{ .Values.config.fromRepo.branch }}
           cp -r /repo/* /config
         env:
         - name: USERNAME
@@ -53,8 +51,6 @@ spec:
             secretKeyRef:
               name: {{ .Values.config.fromRepo.credentials.token.secret }}
               key: {{ .Values.config.fromRepo.credentials.token.key }}
-        - name: GIT_REPO
-          value: {{ .Values.config.fromRepo.repo }}
         volumeMounts:
         - name: config
           mountPath: /config
