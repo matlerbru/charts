@@ -20,19 +20,43 @@ spec:
         image: acockburn/appdaemon:latest
         env:
         - name: HA_URL
-          value: {{ .Values.homeAssistant.url }}:{{ default "8123" .Values.homeAssistant.port }}
+          value: {{ .Values.homeAssistant.url }}:{{ .Values.homeAssistant.port }}
         - name: TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.homeAssistant.token.secret }}
               key: {{ .Values.homeAssistant.token.key }}
-      {{- if .Values.persistence.enabled }}
         volumeMounts:
-        - name: data  
-          mountPath: /mosquitto/data
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-data
+        - name: config
+          mountPath: /conf
+      {{ if hasKey .Values.config "fromRepo" }}
+      initContainers:
+      {{ if eq .Values.config.fromRepo.type "git" }}
+      - name: git-clone
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - |
+          git clone https://$USERNAME:$TOKEN@$GIT_REPO /config
+          cd /config
+          git checkout $GIT_REPO
+        env:
+        - name: USERNAME
+          value: {{ .Values.config.fromRepo.credentials.username }}
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.config.fromRepo.credentials.token.secret }}
+              key: {{ .Values.config.fromRepo.credentials.token.key }}
+        - name: GIT_REPO
+          value: {{ .Values.config.fromRepo.repo }}
+        volumeMounts:
+        - name: config
+          mountPath: /config
       {{- end }}
+      {{- end }}
+      volumes:
+      - name: config
+        emptyDir: {}
 ---

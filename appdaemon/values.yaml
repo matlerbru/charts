@@ -6,10 +6,21 @@ persistence:
     size: 1Gi
 
 homeAssistant:
-    url: http://home-assistant.priv
-    port: 80
+    url: ""
+    port: 8123
     token:
         secret: ""
         key: ""
+
+config: {}
+#    fromRepo:
+#        type: git
+#        repo: ""
+#        branch: main
+#        credentials:
+#            username: ""
+#            token:
+#                secret: github-access-token
+#                key: TOKEN
 ---
 
