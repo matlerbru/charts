@@ -39,8 +39,10 @@ spec:
         - -c
         - |
           set -e
+          echo "git clone https://$USERNAME:$TOKEN@$GIT_REPO /repo"
           git clone https://$USERNAME:$TOKEN@$GIT_REPO /repo
           cd /repo
+          ls /repo
           git checkout $GIT_REPO
           cp -r /repo/* /config
         env:
