@@ -11,7 +11,6 @@ data:
       elevation: {{ default 0 .Values.homeAssistant.settings.elevation }}
       time_zone: {{ default "Europe/London" .Values.homeAssistant.settings.time_zone }}
       unit_system: {{ default "metric" .Values.homeAssistant.settings.unit_system }}
-
     plugins:
       {{- if hasKey .Values "mqtt" }}
       mqtt:
@@ -31,9 +30,5 @@ data:
         {{- end }}
         vertify_ssl: {{ .Values.homeAssistant.verifySsl }}
       {{- end }}
-
     http: 
       url: http://0.0.0.0:5050
-    admin:
-    api:
-    hadashboard:
