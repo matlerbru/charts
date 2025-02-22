@@ -26,6 +26,8 @@ spec:
             secretKeyRef:
               name: {{ .Values.homeAssistant.token.secret }}
               key: {{ .Values.homeAssistant.token.key }}
+        - name: cert_verify
+          value: {{ .Values.homeAssistant.verifySsl }}
         volumeMounts:
         - name: config
           mountPath: /conf

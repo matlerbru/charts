@@ -11,6 +11,7 @@ homeAssistant:
     token:
         secret: ""
         key: ""
+    verifySsl: true
 
 config: {}
 #    fromRepo:
