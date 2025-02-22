@@ -8,5 +8,5 @@ spec:
     app: {{ .Release.Name }}
   ports:
     - name: dashboard
-      port: 1883
-      targetPort: 1883
+      port: 5050
+      targetPort: 5050

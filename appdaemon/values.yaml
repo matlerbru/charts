@@ -5,6 +5,11 @@ persistence:
     storageClass: ""
     size: 1Gi
 
+ingress:
+    enabled: false
+    annotations: []
+    host: ""
+
 homeAssistant:
     url: ""
     port: 8123
