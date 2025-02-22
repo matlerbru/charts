@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-jellyfin
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   {{- if gt (len .Values.ingress.annotations) 0 }}
   {{- with .Values.ingress.transmission.annotations }}
