@@ -28,6 +28,23 @@ spec:
               key: {{ .Values.homeAssistant.token.key }}
         - name: VERT_VERIFY
           value: "{{ .Values.homeAssistant.verifySsl }}"
+        {{- if hasKey .Values "mqtt" }}
+        - name: MQTT_HOST
+          value: {{ .Values.mqtt.host }}
+        - name: MQTT_PORT
+          value: "{{ .Values.mqtt.port }}"
+        {{- if hasKey .Values.mqtt "username" }}
+        - name: MQTT_USERNAME
+        {{- end }}
+        {{- if hasKey .Values.mqtt "password" }}
+          value: {{ .Values.mqtt.username }}
+        {{- end }}
+        - name: MQTT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mqtt.password.secret }}
+              key: {{ .Values.mqtt.password.key }}
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: /conf

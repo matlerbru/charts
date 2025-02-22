@@ -13,6 +13,14 @@ homeAssistant:
         key: ""
     verifySsl: true
 
+mqtt:
+    host: ""
+    port: 1883
+    username: ""
+    password:
+        secret: ""
+        key: ""
+
 config: {}
 #    fromRepo:
 #        type: git
