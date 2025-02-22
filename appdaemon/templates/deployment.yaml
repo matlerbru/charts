@@ -40,9 +40,6 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /conf
-        - name: appdaemon
-          mountPath: /conf/appdaemon.yaml
-          subPath: appdaemon.yaml
       {{ if hasKey .Values.config "fromRepo" }}
       initContainers:
       {{ if eq .Values.config.fromRepo.type "git" }}
@@ -57,6 +54,7 @@ spec:
           cd /repo
           git checkout {{ .Values.config.fromRepo.branch }}
           cp -r /repo/* /config
+          cp /appdaemon.yaml /config/appdaemon.yaml
         env:
         - name: USERNAME
           value: {{ .Values.config.fromRepo.credentials.username }}
@@ -68,6 +66,9 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        - name: appdaemon
+          mountPath: /appdaemon.yaml
+          subPath: appdaemon.yaml
       {{- end }}
       {{- end }}
       volumes:
