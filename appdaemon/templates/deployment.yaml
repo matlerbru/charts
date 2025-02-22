@@ -19,35 +19,30 @@ spec:
       - name: {{ .Release.Name }}
         image: acockburn/appdaemon:latest
         env:
-        - name: HA_URL
-          value: {{ .Values.homeAssistant.url }}:{{ .Values.homeAssistant.port }}
+        {{- if hasKey .Values "homeAssistant" }}
+        {{- if .Values.homeAssistant.token.secret }}
         - name: TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.homeAssistant.token.secret }}
               key: {{ .Values.homeAssistant.token.key }}
-        - name: VERT_VERIFY
-          value: "{{ .Values.homeAssistant.verifySsl }}"
+        {{- end }}
+        {{- end }}
         {{- if hasKey .Values "mqtt" }}
-        - name: MQTT_HOST
-          value: {{ .Values.mqtt.host }}
-        - name: MQTT_PORT
-          value: "{{ .Values.mqtt.port }}"
-        {{- if hasKey .Values.mqtt "username" }}
-        - name: MQTT_USERNAME
-        {{- end }}
-        {{- if hasKey .Values.mqtt "password" }}
-          value: {{ .Values.mqtt.username }}
-        {{- end }}
+        {{- if .Values.mqtt.password.secret }}
         - name: MQTT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.mqtt.password.secret }}
               key: {{ .Values.mqtt.password.key }}
         {{- end }}
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: /conf
+        - name: appdaemon
+          mountPath: /conf/appdaemon.yaml
+          subPath: appdaemon.yaml
       {{ if hasKey .Values.config "fromRepo" }}
       initContainers:
       {{ if eq .Values.config.fromRepo.type "git" }}
@@ -78,4 +73,7 @@ spec:
       volumes:
       - name: config
         emptyDir: {}
+      - name: appdaemon
+        configMap:
+          name: {{ .Release.Name }}
 ---

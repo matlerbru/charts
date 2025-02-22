@@ -12,6 +12,13 @@ homeAssistant:
         secret: ""
         key: ""
     verifySsl: true
+    settings:
+        {}
+        # latitude: 52.43
+        # longitude: 13.22
+        # elevation: 100
+        # time_zone: "Europe/Berlin"
+        # unit_system: metric
 
 mqtt:
     host: ""

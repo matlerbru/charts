@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  appdaemon.yaml: |
+    appdaemon:
+      latitude: {{ default 0 .Values.homeAssistant.settings.latitude }}
+      longitude: {{ default 0 .Values.homeAssistant.settings.longitude }}
+      elevation: {{ default 0 .Values.homeAssistant.settings.elevation }}
+      time_zone: {{ default "Europe/London" .Values.homeAssistant.settings.time_zone }}
+      unit_system: {{ default "metric" .Values.homeAssistant.settings.unit_system }}
+
+    plugins:
+      {{- if hasKey .Values "mqtt" }}
+      mqtt:
+        host: {{ .Values.mqtt.host }}
+        port: {{ .Values.mqtt.port }}
+        username: {{ default "" .Values.mqtt.username }}
+        {{- if hasKey .Values.mqtt "password" }}
+        password: !env MQTT_PASSWORD
+        {{- end }}
+      {{- end }}
+      {{ if hasKey .Values "homeAssistant" }}
+      HASS:
+        type: {{ default "hass" .Values.homeAssistant.type }}
+        ha_url: {{ .Values.homeAssistant.url }}:{{ .Values.homeAssistant.port }}
+        {{- if hasKey .Values.homeAssistant "token" }}
+        token: !env TOKEN
+        {{- end }}
+        vertify_ssl: {{ .Values.homeAssistant.verifySsl }}
+      {{- end }}
+
+    http: 
+      url: http://0.0.0.0:5050
+    admin:
+    api:
+    hadashboard:
