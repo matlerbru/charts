@@ -19,7 +19,7 @@ data:
         port: {{ .Values.mqtt.port }}
         username: {{ default "" .Values.mqtt.username }}
         {{- if hasKey .Values.mqtt "password" }}
-        password: !env MQTT_PASSWORD
+        password: "${MQTT_PASSWORD}"
         {{- end }}
       {{- end }}
       {{ if hasKey .Values "homeAssistant" }}
@@ -27,7 +27,7 @@ data:
         type: {{ default "hass" .Values.homeAssistant.type }}
         ha_url: {{ .Values.homeAssistant.url }}:{{ .Values.homeAssistant.port }}
         {{- if hasKey .Values.homeAssistant "token" }}
-        token: !env TOKEN
+        token: "${TOKEN}"
         {{- end }}
         vertify_ssl: {{ .Values.homeAssistant.verifySsl }}
       {{- end }}
