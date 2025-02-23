@@ -54,7 +54,9 @@ spec:
           cd /repo
           git checkout {{ .Values.config.fromRepo.branch }}
           cp -r /repo/* /config
-          cp /appdaemon.yaml /config/appdaemon.yaml
+          {{- if not .Values.config.useAppdaemonConfigFromRepo }}
+          cp -f /appdaemon.yaml /config/appdaemon.yaml
+          {{- end }}
         env:
         - name: USERNAME
           value: {{ .Values.config.fromRepo.credentials.username }}

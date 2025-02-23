@@ -28,7 +28,8 @@ mqtt:
         secret: ""
         key: ""
 
-config: {}
+config:
+    useAppdaemonConfigFromRepo: false
 #    fromRepo:
 #        type: git
 #        repo: ""
