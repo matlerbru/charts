@@ -68,15 +68,19 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        {{- if not .Values.config.useAppdaemonConfigFromRepo }}
         - name: appdaemon
           mountPath: /appdaemon.yaml
           subPath: appdaemon.yaml
+        {{- end }}
       {{- end }}
       {{- end }}
       volumes:
       - name: config
         emptyDir: {}
+      {{- if not .Values.config.useAppdaemonConfigFromRepo }}
       - name: appdaemon
         configMap:
           name: {{ .Release.Name }}
+      {{- end }}
 ---
