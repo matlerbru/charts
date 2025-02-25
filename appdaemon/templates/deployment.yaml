@@ -79,6 +79,10 @@ spec:
         {{- end }}
       {{- end }}
       {{- end }}
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+      {{- .Values.tolerations | toYaml | nindent 8 }}
+      {{- end }}
       volumes:
       - name: config
         emptyDir: {}
