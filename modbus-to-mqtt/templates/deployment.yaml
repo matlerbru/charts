@@ -30,6 +30,18 @@ spec:
         - name: {{ .Release.Name }}-config
           mountPath: /config.yaml
           subPath: config.yaml
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 2
+          periodSeconds: 5
       {{- if hasKey .Values "tolerations" }}
       tolerations:
       {{- .Values.tolerations | toYaml | nindent 8 }}
