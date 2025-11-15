@@ -1,6 +1,6 @@
 image:
   registry: ghcr.io
-  name: brunhoej/go-modbus-to-mqtt
+  name: mbrunhoej/go-modbus-to-mqtt
   tag: latest
   imagePullPolicy: always
 
