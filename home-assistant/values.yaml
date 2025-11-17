@@ -8,6 +8,6 @@ tolerations: []
 ingress:
     enabled: false
     annotations: {}
-    host: ""
+    hostname: ""
 
 config: ""
