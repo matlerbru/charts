@@ -1,8 +1,20 @@
+{{- if .Values.service.clusterIp.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.clusterIp.annotations }}
+    {{- toYaml .Values.service.clusterIp.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.service.clusterIp.abels }}
+    {{- toYaml .Values.service.clusterIp.labels | nindent 4 }}
+    {{- end }}
 spec:
   selector:
     app: {{ .Release.Name }}
@@ -14,12 +26,24 @@ spec:
       port: 9001
       targetPort: 9001
 ---
+{{- end }}
 {{- if .Values.service.loadBalancer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-lb
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.loadBalancer.annotations }}
+    {{- toYaml .Values.service.loadBalancer.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.service.loadBalancer.labels }}
+    {{- toYaml .Values.service.loadBalancer.labels | nindent 4 }}
+    {{- end }}
 spec:
   selector:
     app: {{ .Release.Name }}

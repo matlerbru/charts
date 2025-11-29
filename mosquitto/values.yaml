@@ -1,16 +1,42 @@
 
-tolerations: []
+deployment:
+  labels:
+  annotations:
+  podLabels: {}
+  podAnnotations: {}
 
-persistentVolumeClaim:
-    storageClass: ""
-    size: 1Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
 
-config: ""
+  nodeSelector: {}
+  tolerations: []
 
 service:
-    loadBalancer:
-        enabled: true
+  clusterIp:
+    enabled: true
+    labels: []
+    annotations: []
 
-tolerations: []
+  loadBalancer:
+    enabled: false
+    labels: []
+    annotations: []
 
-nodeSelector: {}
+configMap:
+  config:
+  annotations: {}
+  labels: {}
+
+persistence:
+  enabled: false
+  storageClass: ""
+  size: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  annotations: {}
+  labels: {}

@@ -3,8 +3,17 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.deployment.annotations }}
+    {{- toYaml .Values.deployment.annotations | nindent 4}}
+    {{- end }}
   labels:
-    app: {{ .Release.Name }}
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.deployment.labels }}
+    {{- toYaml .Values.deployment.labels | nindent 4}}
+    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -12,25 +21,37 @@ spec:
       app: {{ .Release.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ toYaml .Values.configMap.config | sha256sum }}
+        {{- if .Values.deployment.podAnnotations }}
+        {{- toYaml .Values.deployment.podAnnotations | nindent 8}}
+        {{- end }}
       labels:
-        app: {{ .Release.Name }}
+        app.kubernetes.io/name: mosquitto
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+        {{- if .Values.deployment.podLabels }}
+        {{- toYaml .Values.deployment.podLabels | nindent 8}}
+        {{- end }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: eclipse-mosquitto
+        image: eclipse-mosquitto:{{ .Chart.AppVersion }}
         volumeMounts:
         - name: data  
           mountPath: /mosquitto/data
         - name: config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
+        resources:
+        {{- toYaml .Values.deployment.resources | nindent 10 }}
       {{- if hasKey .Values "tolerations" }}
       tolerations:
-      {{- .Values.tolerations | toYaml | nindent 8 }}
+      {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
       volumes:
       - name: data
