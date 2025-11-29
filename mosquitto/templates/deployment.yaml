@@ -18,7 +18,9 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app.kubernetes.io/name: mosquitto
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.AppVersion }}
   template:
     metadata:
       annotations:
@@ -34,7 +36,7 @@ spec:
         {{- toYaml .Values.deployment.podLabels | nindent 8}}
         {{- end }}
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
@@ -49,7 +51,7 @@ spec:
           subPath: mosquitto.conf
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
-      {{- if hasKey .Values "tolerations" }}
+      {{- if hasKey .Values.deployment "tolerations" }}
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
