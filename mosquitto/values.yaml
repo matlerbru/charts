@@ -28,7 +28,7 @@ service:
     annotations: []
 
 configMap:
-  config:
+  config: ""
   annotations: {}
   labels: {}
 
