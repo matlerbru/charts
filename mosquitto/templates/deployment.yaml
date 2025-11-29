@@ -57,7 +57,7 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-data
+          claimName: {{ .Release.Name }}
       - name: config
         configMap:
           name: {{ .Release.Name }}
