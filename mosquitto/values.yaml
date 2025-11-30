@@ -16,6 +16,31 @@ deployment:
   nodeSelector: {}
   tolerations: []
 
+  startupProbe:
+    tcpSocket:
+      port: mqtt
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    failureThreshold: 12
+
+  readinessProbe:
+    tcpSocket:
+      port: mqtt
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+    successThreshold: 1
+
+  livenessProbe:
+    tcpSocket:
+      port: mqtt
+    initialDelaySeconds: 20
+    periodSeconds: 20
+    timeoutSeconds: 2
+    failureThreshold: 3
+    successThreshold: 1
+
 service:
   clusterIp:
     enabled: true
@@ -41,3 +66,6 @@ persistence:
   - ReadWriteOnce
   annotations: {}
   labels: {}
+
+  ## add exporter
+

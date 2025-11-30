@@ -21,10 +21,10 @@ spec:
   ports:
     - name: mqtt
       port: 1883
-      targetPort: 1883
+      targetPort: mqtt
     - name: http
       port: 9001
-      targetPort: 9001
+      targetPort: http
 ---
 {{- end }}
 {{- if .Values.service.loadBalancer.enabled }}
@@ -51,5 +51,5 @@ spec:
   ports:
     - name: mqtt
       port: 1883
-      targetPort: 1883
+      targetPort: mqtt
 {{- end }}

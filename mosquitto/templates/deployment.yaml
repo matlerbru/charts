@@ -38,7 +38,6 @@ spec:
       nodeSelector:
         {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
-      
       securityContext:
         runAsUser: 1883
         runAsGroup: 1883
@@ -46,6 +45,11 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         image: eclipse-mosquitto:{{ .Chart.AppVersion }}
+        ports:
+        - name: mqtt
+          port: 1883
+        - name: http
+          port: 9001
         volumeMounts:
         - name: data  
           mountPath: /mosquitto/data
@@ -54,6 +58,15 @@ spec:
           subPath: mosquitto.conf
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
+        {{- if .Values.deployment.startupProbe }}
+        {{- toYaml .Values..deployment.startupProbe | nindent 8 }}
+        {{- end }}
+        {{- if .Values.deployment.readinessProbe }}
+        {{- toYaml .Values..deployment.readinessProbe | nindent 8 }}
+        {{- end }}
+        {{- if .Values.deployment.livenessProbe }}
+        {{- toYaml .Values..deployment.livenessProbe | nindent 8 }}
+        {{- end }}
       {{- if hasKey .Values.deployment "tolerations" }}
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
