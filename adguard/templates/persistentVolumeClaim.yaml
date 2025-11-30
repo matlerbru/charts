@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-work
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if .Values.persistence..work.annotations }}
+    {{- if .Values.persistence.work.annotations }}
     {{- toYaml .Values.persistence.work.annotations | nindent 4}}
     {{- end }}
   labels:
@@ -33,7 +33,7 @@ metadata:
   name: {{ .Release.Name }}-config
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if .Values.persistence..config.annotations }}
+    {{- if .Values.persistence.config.annotations }}
     {{- toYaml .Values.persistence.config.annotations | nindent 4}}
     {{- end }}
   labels:
