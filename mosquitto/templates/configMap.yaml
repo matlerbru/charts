@@ -24,7 +24,7 @@ data:
 
     allow_anonymous {{ .Values.config.allowAnonymous }}
 
-    {{- .Values.persistence.enabled }}
+    {{- if .Values.persistence.enabled }}
       persistence true
       persistence_location mosquitto/data/
     {{- end }}
