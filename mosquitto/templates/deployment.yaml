@@ -47,9 +47,9 @@ spec:
         image: eclipse-mosquitto:{{ .Chart.AppVersion }}
         ports:
         - name: mqtt
-          port: 1883
+          containerPort: 1883
         - name: http
-          port: 9001
+          containerPort: 9001
         volumeMounts:
         - name: data  
           mountPath: /mosquitto/data
@@ -72,7 +72,7 @@ spec:
         image: sapcc/mosquitto-exporter
         ports:
         - name: metrics
-          port: 8080
+          containerPort: 8080
         args:
         - --endpoint tcp://localhost:1883
         - --bind-address 0.0.0.0:8080
