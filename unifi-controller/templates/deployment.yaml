@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/component: unifi-controller
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     {{- if .Values.unifiController.deployment.labels }}
     {{- toYaml .Values.unifiController.deployment.labels | nindent 4}}
     {{- end }}
@@ -32,7 +32,7 @@ spec:
         app.kubernetes.io/name: unifi-controller
         app.kubernetes.io/component: unifi-controller
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
         {{- if .Values.unifiController.deploymentpodLabels }}
         {{- toYaml .Values.unifiController.deploymentpodLabels | nindent 8}}
         {{- end }}
@@ -139,7 +139,7 @@ metadata:
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/component: mongo
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Values.mongo.deployment.image.tag }}
+    app.kubernetes.io/version: {{ .Values.mongo.deployment.image.tag | quote }}
     {{- if .Values.mongo.deployment.labels }}
     {{- toYaml .Values.mongo.deployment.labels | nindent 4}}
     {{- end }}
@@ -160,7 +160,7 @@ spec:
         app.kubernetes.io/name: unifi-controller
         app.kubernetes.io/component: mongo
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/version: {{ .Values.mongo.deployment.image.tag }}
+        app.kubernetes.io/version: {{ .Values.mongo.deployment.image.tag | quote }}
         {{- if .Values.mongo.deployment.podLabels }}
         {{- toYaml .Values.mongo.deployment.podLabels | nindent 8}}
         {{- end }}
