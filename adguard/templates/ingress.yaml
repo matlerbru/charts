@@ -25,7 +25,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Release.Name }}-ui
+            name: {{ .Release.Name }}
             port:
               name: http
+      - path: /setup
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}
+            port:
+              name: http-initial
 {{- end }}
