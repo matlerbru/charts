@@ -39,6 +39,11 @@ spec:
       nodeSelector:
         {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
+      
+      securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
+        fsGroup: 1883
       containers:
       - name: {{ .Release.Name }}
         image: eclipse-mosquitto:{{ .Chart.AppVersion }}

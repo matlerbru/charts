@@ -16,4 +16,17 @@ metadata:
     {{- end }}
 data:
   mosquitto.conf: |
-    {{- .Values.configMap.config | nindent 4 }}
+
+    listener 1883
+    user mosquitto
+
+    log_dest stdout
+
+    allow_anonymous {{ .Values.config.allowAnonymous }}
+
+    {{- .Values.persistence.enabled }}
+      persistence true
+      persistence_location mosquitto/data/
+    {{- end }}
+
+    {{- .Values.config.additionalConfig | nindent 4 }}

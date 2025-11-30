@@ -27,10 +27,11 @@ service:
     labels: []
     annotations: []
 
-configMap:
-  config: ""
+config:
+  allowAnonymous: true
   annotations: {}
   labels: {}
+  additionalConfig: ""
 
 persistence:
   enabled: false
