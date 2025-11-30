@@ -1,29 +1,55 @@
+{{- .Values.persistence.work.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-work
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.persistence..work.annotations }}
+    {{- toYaml .Values.persistence.work.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.persistence.work.labels }}
+    {{- toYaml .Values.persistence.work.labels | nindent 4}}
+    {{- end }}
 spec:
   accessModes:
-    - ReadWriteOnce
+  {{- range $mode := .Values.persistence.work.accessModes }}
+    - {{ $mode }}
+  {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.work.size }}
-  {{- if .Values.persistentVolumeClaim.work.storageClass }}
-  storageClassName: {{ .Values.persistentVolumeClaim.work.storageClass }}
-  {{- end }}
+      storage: {{ .Values.persistence.work.size }} 
+  storageClassName: {{ .Values.persistence.work.storageClass }}
 ---
+{{- end }}
+{{- .Values.persistence.config.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-config
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.persistence..config.annotations }}
+    {{- toYaml .Values.persistence.config.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.persistence.config.labels }}
+    {{- toYaml .Values.persistence.config.labels | nindent 4}}
+    {{- end }}
 spec:
   accessModes:
-    - ReadWriteOnce
+  {{- range $mode := .Values.persistence.config.accessModes }}
+    - {{ $mode }}
+  {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.config.size }}
-  {{- if .Values.persistentVolumeClaim.config.storageClass }}
-  storageClassName: {{ .Values.persistentVolumeClaim.config.storageClass }}
-  {{- end }}
+      storage: {{ .Values.persistence.config.size }} 
+  storageClassName: {{ .Values.persistence.config.storageClass }}
+{{- end }}

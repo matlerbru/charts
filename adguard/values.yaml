@@ -1,12 +1,92 @@
 
-hostname: adguard.priv
+deployment:
+  labels:
+  annotations:
+  podLabels: {}
+  podAnnotations: {}
 
-persistentVolumeClaim:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+  nodeSelector: {}
+  tolerations: []
+
+  startupProbe:
+    exec:
+      command:
+        - sh
+        - -c
+        - |
+          ( nc -z localhost 80 || nc -z localhost 3000 )
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    failureThreshold: 12
+
+  readinessProbe:
+    exec:
+      command:
+        - sh
+        - -c
+        - |
+          ( nc -z localhost 80 || nc -z localhost 3000 )
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+    successThreshold: 1
+
+  livenessProbe:
+    exec:
+      command:
+        - sh
+        - -c
+        - |
+          ( nc -z localhost 80 || nc -z localhost 3000 )
+    initialDelaySeconds: 20
+    periodSeconds: 20
+    timeoutSeconds: 2
+    failureThreshold: 3
+    successThreshold: 1
+
+service:
+  clusterIp:
+    enabled: true
+    labels: []
+    annotations: []
+
+  loadBalancer:
+    enabled: false
+    labels: []
+    annotations: []
+
+ingress:
+  enabled: true
+  hostname: ""
+  ingressClass: ""
+  labels: {}
+  annotations: {}
+
+persistence:
   config:
+    enabled: false
     storageClass: ""
     size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
   work:
+    enabled: false
     storageClass: ""
     size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
 
 

@@ -1,31 +1,60 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  selector:
-    app: {{ .Release.Name }}
-  type: LoadBalancer
-  ports:
-  - protocol: UDP
-    port: 53
-    targetPort: 53
-    name: dns
-  - protocol: TCP
-    port: 3000
-    targetPort: 3000
-    name: http-initial
----
+{{- if .Values.service.loadBalancer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-ui
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.clusterIp.annotations }}
+    {{- toYaml .Values.service.clusterIp.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.service.clusterIp.abels }}
+    {{- toYaml .Values.service.clusterIp.labels | nindent 4 }}
+    {{- end }}
 spec:
   selector:
-    app: {{ .Release.Name }}
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 80
+    targetPort: http
+    name: http
+---
+{{- end }}
+{{- if .Values.service.loadBalancer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.clusterIp.annotations }}
+    {{- toYaml .Values.service.clusterIp.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.service.clusterIp.abels }}
+    {{- toYaml .Values.service.clusterIp.labels | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    app.kubernetes.io/name: adguard
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  type: LoadBalancer
+  ports:
+  - protocol: UDP
+    port: 53
+    targetPort: dns
+    name: dns
+  - protocol: TCP
+    port: 3000
+    targetPort: http-initial
+    name: http-initial
+{{- end }}
