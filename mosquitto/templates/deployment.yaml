@@ -58,15 +58,12 @@ spec:
           subPath: mosquitto.conf
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
-        {{- if .Values.deployment.startupProbe }}
+        startupProbe:
         {{- toYaml .Values.deployment.startupProbe | nindent 8 }}
-        {{- end }}
-        {{- if .Values.deployment.readinessProbe }}
+        readinessProbe:
         {{- toYaml .Values.deployment.readinessProbe | nindent 8 }}
-        {{- end }}
-        {{- if .Values.deployment.livenessProbe }}
+        livenessProbe:
         {{- toYaml .Values.deployment.livenessProbe | nindent 8 }}
-        {{- end }}
       {{- if .Values.serviceMonitor.enabled }}
       - name: mosquitto-exporter
         image: sapcc/mosquitto-exporter
@@ -74,8 +71,10 @@ spec:
         - name: metrics
           containerPort: 8080
         args:
-        - --endpoint tcp://localhost:1883
-        - --bind-address 0.0.0.0:8080
+        - "--endpoint"
+        - "tcp://localhost:1883"
+        - "--bind-address"
+        - "0.0.0.0:8080"
       {{- end }}
       {{- if hasKey .Values.deployment "tolerations" }}
       tolerations:
