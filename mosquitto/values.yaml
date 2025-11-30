@@ -67,5 +67,10 @@ persistence:
   annotations: {}
   labels: {}
 
-  ## add exporter
+serviceMonitor:
+  enabled: false
+  labels: {}
+  annotations: {}
+  interval: 30s
+  scrapeTimeout: 15s
 

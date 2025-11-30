@@ -43,7 +43,7 @@ spec:
         runAsGroup: 1883
         fsGroup: 1883
       containers:
-      - name: {{ .Release.Name }}
+      - name: mosquitto
         image: eclipse-mosquitto:{{ .Chart.AppVersion }}
         ports:
         - name: mqtt
@@ -67,6 +67,16 @@ spec:
         {{- if .Values.deployment.livenessProbe }}
         {{- toYaml .Values.deployment.livenessProbe | nindent 8 }}
         {{- end }}
+      {{- if .Values.serviceMonitor.enabled }}
+      - name: mosquitto-exporter
+        image: sapcc/mosquitto-exporter
+        ports:
+        - name: metrics
+          port: 8080
+        args:
+        - --endpoint tcp://localhost:1883
+        - --bind-address 0.0.0.0:8080
+      {{- end }}
       {{- if hasKey .Values.deployment "tolerations" }}
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}

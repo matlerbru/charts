@@ -25,6 +25,11 @@ spec:
     - name: http
       port: 9001
       targetPort: http
+    {{- if .Values.serviceMonitor.enabled }}
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+    {{- end }}
 ---
 {{- end }}
 {{- if .Values.service.loadBalancer.enabled }}
