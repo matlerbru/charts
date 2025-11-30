@@ -53,11 +53,11 @@ spec:
         - name: dns
           containerPort: 53 
         volumeMounts:
-        {{- .Values.persistence.work.enabled }}
+        {{- if .Values.persistence.work.enabled }}
         - name: work
           mountPath: /opt/adguardhome/work
         {{- end }}
-        {{- .Values.persistence.config.enabled }}
+        {{- if .Values.persistence.config.enabled }}
         - name: config
           mountPath: /opt/adguardhome/conf
         {{- end }}
@@ -74,12 +74,12 @@ spec:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
       volumes:
-      {{- .Values.persistence.work.enabled }}
+      {{- if .Values.persistence.work.enabled }}
       - name: work
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-work
       {{- end }}
-      {{- .Values.persistence.config.enabled }}
+      {{- if .Values.persistence.config.enabled }}
       - name: config
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-config
