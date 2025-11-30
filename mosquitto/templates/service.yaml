@@ -17,7 +17,8 @@ metadata:
     {{- end }}
 spec:
   selector:
-    app: {{ .Release.Name }}
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
     - name: mqtt
       port: 1883
@@ -51,7 +52,8 @@ metadata:
     {{- end }}
 spec:
   selector:
-    app: {{ .Release.Name }}
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
   type: LoadBalancer
   ports:
     - name: mqtt
