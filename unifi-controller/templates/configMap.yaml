@@ -3,6 +3,16 @@ kind: ConfigMap
 metadata:
   name: mongo-init-script
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.configMap.annotations }}
+    {{- toYaml .Values.configMap.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- if .Values.configMap.labels }}
+    {{- toYaml .Values.configMap.labels | nindent 4}}
+    {{- end }}
 data:
   init-mongo.sh: |
     #!/bin/bash

@@ -1,15 +1,99 @@
-persistentVolumeClaim:
+
+unifiController:
+
+  deployment:
+
+    labels: {}
+    annotation: {}
+
+    podLabels: {}
+    podAnnotations: {}
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+    nodeSelector: {}
+    tolerations: []
+
+    startupProbe:
+    readinessProbe:
+    livenessProbe:
+
+    initContainer:
+      image:
+        tag: latest
+
+  service:
+    labels: {}
+    annotations: {}
+
+mongo:
+
+  deployment:
+
+    image:
+      tag: 8.0.16-nanoserver
+
+    labels: {}
+    annotation: {}
+
+    podLabels: {}
+    podAnnotations: {}
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+    nodeSelector: {}
+    tolerations: []
+
+    startupProbe:
+    readinessProbe:
+    livenessProbe:
+
+  service:
+    labels: {}
+    annotations: {}
+
+configMap:
+  labels: {}
+  annotations: {}
+
+persistence:
   config:
-    storageClass: synology
+    storageClass: ""
     size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
   data:
-    storageClass: synology-backup
-    size: 5Gi
-  mongoDbData:
-    storageClass: synology-backup
-    size: 5Gi
+    storageClass: ""
+    size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
+  mongo:
+    storageClass: ""
+    size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
 
 secret:
   existingkey:
     enabled: false
     name: ""
+  labels: {}
+  annotations: {}

@@ -1,6 +1,6 @@
 image:
   registry: ghcr.io
-  name: matlerbru/modbus-to-mqtt
+  name: mbrunhoej/modbus-to-mqtt
   tag: latest
 
 config:

@@ -2,43 +2,76 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-config
-  labels:
-    app: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.persistence.config.annotations }}
+    {{- toYaml .Values.persistence.config.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.persistence.config.labels }}
+    {{- toYaml .Values.persistence.config.labels | nindent 4}}
+    {{- end }}
 spec:
-  storageClassName: {{ .Values.persistentVolumeClaim.config.storageClass }}
   accessModes:
-    - ReadWriteOnce
+  {{- range $mode := .Values.persistence.config.accessModes }}
+    - {{ $mode }}
+  {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.config.size }}
+      storage: {{ .Values.persistence.config.size }} 
+  storageClassName: {{ .Values.persistence.config.storageClass }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-data
-  labels:
-    app: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.persistence.data.annotations }}
+    {{- toYaml .Values.persistence.data.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.persistence.data.labels }}
+    {{- toYaml .Values.persistence.data.labels | nindent 4}}
+    {{- end }}
 spec:
-  storageClassName: {{ .Values.persistentVolumeClaim.data.storageClass }}
   accessModes:
-    - ReadWriteOnce
+  {{- range $mode := .Values.persistence.data.accessModes }}
+    - {{ $mode }}
+  {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.data.size }}
+      storage: {{ .Values.persistence.data.size }} 
+  storageClassName: {{ .Values.persistence.data.storageClass }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Release.Name }}-mongo-db-data
-  labels:
-    app: {{ .Release.Name }}-mongo-db
+  name: {{ .Release.Name }}-mongo
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.persistence.mongo.annotations }}
+    {{- toYaml .Values.persistence.mongo.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    {{- if .Values.persistence.mongo.labels }}
+    {{- toYaml .Values.persistence.mongo.labels | nindent 4}}
+    {{- end }}
 spec:
-  storageClassName: {{ .Values.persistentVolumeClaim.mongoDbData.storageClass }}
   accessModes:
-    - ReadWriteOnce
+  {{- range $mode := .Values.persistence.mongo.accessModes }}
+    - {{ $mode }}
+  {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaim.mongoDbData.size }}
+      storage: {{ .Values.persistence.mongo.size }} 
+  storageClassName: {{ .Values.persistence.mongo.storageClass }}
