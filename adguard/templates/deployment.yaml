@@ -42,9 +42,15 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 100
+        runAsNonRoot: true
       containers:
       - name: adguard
         image: adguard/adguardhome:{{ .Chart.AppVersion }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+              - NET_BIND_SERVICE
         ports:
         - name: http
           containerPort: 80

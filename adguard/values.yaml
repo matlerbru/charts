@@ -16,6 +16,13 @@ deployment:
   nodeSelector: {}
   tolerations: []
 
+  # Needs to run as root for first use
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
+    runAsNonRoot: false
+
   startupProbe:
     exec:
       command:
