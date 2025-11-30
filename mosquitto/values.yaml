@@ -18,16 +18,14 @@ deployment:
 
   startupProbe:
     tcpSocket:
-      port: metrics
-      path: /metrics
+      port: mqtt
     initialDelaySeconds: 5
     periodSeconds: 5
     failureThreshold: 12
 
   readinessProbe:
-    tcpSocket:
-      port: metrics
-      path: /metrics
+    exec:
+      command: ["sh", "-c", "netstat -ln 2>/dev/null | grep ':1883 ' || ss -lnt 2>/dev/null | grep ':1883 '"]
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 2
@@ -35,9 +33,8 @@ deployment:
     successThreshold: 1
 
   livenessProbe:
-    tcpSocket:
-      port: metrics
-      path: /metrics
+    exec:
+      command: ["sh", "-c", "ps aux | grep '[m]osquitto'"]
     initialDelaySeconds: 20
     periodSeconds: 20
     timeoutSeconds: 2
