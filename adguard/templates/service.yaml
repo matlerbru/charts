@@ -37,15 +37,15 @@ metadata:
   name: {{ .Release.Name }}-dns
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if .Values.service.clusterIp.annotations }}
-    {{- toYaml .Values.service.clusterIp.annotations | nindent 4 }}
+    {{- if .Values.service.loadBalancer.annotations }}
+    {{- toYaml .Values.service.loadBalancer.annotations | nindent 4 }}
     {{- end }}
   labels:
     app.kubernetes.io/name: adguard
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    {{- if .Values.service.clusterIp.abels }}
-    {{- toYaml .Values.service.clusterIp.labels | nindent 4 }}
+    {{- if .Values.service.loadBalancer.abels }}
+    {{- toYaml .Values.service.loadBalancer.labels | nindent 4 }}
     {{- end }}
 spec:
   selector:
