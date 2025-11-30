@@ -38,13 +38,13 @@ spec:
       protocol: UDP
       port: 10001
       targetPort: ap-discovery
-    - name: l2-network-discovery
+    - name: l2-discovery
       protocol: UDP
       port: 1900
-      targetPort: l2-network-discovery
-    - name: mobile-throughput-test
+      targetPort: l2-discovery
+    - name: mobile-test
       port: 6789
-      targetPort: mobile-throughput-test
+      targetPort: mobile-test
     - name: remote-syslog
       protocol: UDP
       port: 5514

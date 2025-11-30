@@ -53,9 +53,9 @@ spec:
           containerPort: 3478
         - name: ap-discovery
           containerPort: 10001
-        - name: l2-network-discovery
+        - name: l2-discovery
           containerPort: 1900
-        - name: mobile-throughput-test
+        - name: mobile-test
           containerPort: 6789
         - name: remote-syslog
           containerPort: 5514
