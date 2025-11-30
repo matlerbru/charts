@@ -39,18 +39,12 @@ spec:
         {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 100
-        runAsNonRoot: true
+        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
       containers:
       - name: adguard
         image: adguard/adguardhome:{{ .Chart.AppVersion }}
         securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            add:
-              - NET_BIND_SERVICE
+          {{- toYaml .Values.deployment.securityContext | nindent 10 }}
         ports:
         - name: http
           containerPort: 80
