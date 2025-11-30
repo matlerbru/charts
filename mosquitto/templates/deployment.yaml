@@ -59,11 +59,11 @@ spec:
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
         startupProbe:
-        {{- toYaml .Values.deployment.startupProbe | nindent 8 }}
+        {{- toYaml .Values.deployment.startupProbe | nindent 10 }}
         readinessProbe:
-        {{- toYaml .Values.deployment.readinessProbe | nindent 8 }}
+        {{- toYaml .Values.deployment.readinessProbe | nindent 10 }}
         livenessProbe:
-        {{- toYaml .Values.deployment.livenessProbe | nindent 8 }}
+        {{- toYaml .Values.deployment.livenessProbe | nindent 10 }}
       {{- if .Values.serviceMonitor.enabled }}
       - name: mosquitto-exporter
         image: sapcc/mosquitto-exporter
