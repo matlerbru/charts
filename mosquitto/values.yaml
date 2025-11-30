@@ -18,14 +18,16 @@ deployment:
 
   startupProbe:
     tcpSocket:
-      port: mqtt
+      port: metrics
+      path: /metrics
     initialDelaySeconds: 5
     periodSeconds: 5
     failureThreshold: 12
 
   readinessProbe:
     tcpSocket:
-      port: mqtt
+      port: metrics
+      path: /metrics
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 2
@@ -34,7 +36,8 @@ deployment:
 
   livenessProbe:
     tcpSocket:
-      port: mqtt
+      port: metrics
+      path: /metrics
     initialDelaySeconds: 20
     periodSeconds: 20
     timeoutSeconds: 2
