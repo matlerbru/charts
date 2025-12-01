@@ -16,16 +16,25 @@ metadata:
 data:
   init-mongo.sh: |
     #!/bin/bash
-    "mongo" <<EOF
-    use ${MONGO_AUTHSOURCE}
-    db.auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}")
-    db.createUser({
-      user: "${MONGO_USER}",
-      pwd: "${MONGO_PASS}",
-      roles: [
-        { db: "${MONGO_DBNAME}", role: "dbOwner" },
-        { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
-        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" }
-      ]
-    })
+    set -e
+    "$mongo" <<EOF
+    try {
+      db.getSiblingDB("admin").auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}");
+    } catch (e) {
+      // ignore auth errors during no-auth phase
+    }
+
+    var authDb = db.getSiblingDB("${MONGO_AUTHSOURCE:-admin}");
+
+    if (!authDb.getUser("${MONGO_USER}")) {
+      authDb.createUser({
+        user: "${MONGO_USER}",
+        pwd: "${MONGO_PASS}",
+        roles: [
+          { role: "dbOwner", db: "${MONGO_DBNAME}" },
+          { role: "dbOwner", db: "${MONGO_DBNAME}_stat" },
+          { role: "dbOwner", db: "${MONGO_DBNAME}_audit" }
+        ]
+      });
+    }
     EOF
