@@ -37,7 +37,7 @@ mongo:
   deployment:
 
     image:
-      tag: 8.0.16-nanoserver
+      tag: 4.4
 
     labels: {}
     annotation: {}

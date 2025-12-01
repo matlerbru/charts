@@ -186,7 +186,7 @@ spec:
               {{- else }}
               name: {{ .Release.Name }}-mongo
               {{- end }}
-              key: mongo-initdb-root-password
+              key: mongo-root-pass
         - name: MONGO_USER
           value: unifi
         - name: MONGO_PASS
