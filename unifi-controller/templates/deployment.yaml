@@ -67,16 +67,16 @@ spec:
         - name: TZ
           value: DK
         - name: MONGO_USER
-          value: root
+          value: unifi
         - name: MONGO_PASS
           valueFrom:
             secretKeyRef:
               {{- if .Values.secret.existingkey.enabled }}
               name: {{ .Values.secret.existingkey.name }}
               {{- else }}
-              name: {{ .Release.Name }}-mongo
+              name: {{ .Release.Name }}
               {{- end }}
-              key: mongo-initdb-root-password
+              key: mongo-pass
         - name: MONGO_HOST
           value: {{ .Release.Name }}-mongo
         - name: MONGO_PORT
@@ -195,7 +195,7 @@ spec:
               {{- if .Values.secret.existingkey.enabled }}
               name: {{ .Values.secret.existingkey.name }}
               {{- else }}
-              name: {{ .Release.Name }}-mongo
+              name: {{ .Release.Name }}
               {{- end }}
               key: mongo-pass
         - name: MONGO_DBNAME
