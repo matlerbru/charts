@@ -24,7 +24,7 @@ data:
       // ignore auth errors during no-auth phase
     }
 
-    var authDb = db.getSiblingDB("${MONGO_AUTHSOURCE:-admin}");
+    var authDb = db.getSiblingDB("${MONGO_AUTHSOURCE}");
 
     if (!authDb.getUser("${MONGO_USER}")) {
       authDb.createUser({
