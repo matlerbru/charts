@@ -57,8 +57,33 @@ mongo:
     tolerations: []
 
     startupProbe:
+      exec:
+        command:
+          - /bin/sh
+          - -c
+          - |
+            mongo --quiet \
+              -u "$MONGO_USER" \
+              -p "$MONGO_PASS" \
+              --authenticationDatabase "$MONGO_AUTHSOURCE" \
+              --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 30
+
     readinessProbe:
+      tcpSocket:
+        port: 27017
+      periodSeconds: 5
+      failureThreshold: 3
+
     livenessProbe:
+      tcpSocket:
+        port: 27017
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 6
 
   service:
     labels: {}
