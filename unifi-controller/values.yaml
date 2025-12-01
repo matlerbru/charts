@@ -21,8 +21,39 @@ unifiController:
     tolerations: []
 
     startupProbe:
+      exec:
+        command:
+          - /bin/sh
+          - -c
+          - |
+            loc=$(curl -sS -k -D - https://127.0.0.1:8443/ \
+              | grep -i Location \
+              | awk '{print $2}' \
+              | tr -d '\r')
+
+            if [ "$loc" = "/setup/" ] || [ "$loc" = "/manage" ]; then
+              exit 0
+            else
+              exit 1
+            fi
+      periodSeconds: 10
+      failureThreshold: 60
+      timeoutSeconds: 5
+
     readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 3
+
     livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 60
+      periodSeconds: 15
+      timeoutSeconds: 5
+      failureThreshold: 5
 
     initContainer:
       image:
