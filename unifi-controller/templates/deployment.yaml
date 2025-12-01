@@ -25,21 +25,21 @@ spec:
   template:
     metadata:
       annotations:
-        {{- if .Values.unifiController.deploymentpodAnnotations }}
-        {{- toYaml .Values.unifiController.deploymentpodAnnotations | nindent 8}}
+        {{- if .Values.unifiController.deployment.podAnnotations }}
+        {{- toYaml .Values.unifiController.deployment.podAnnotations | nindent 8}}
         {{- end }}
       labels:
         app.kubernetes.io/name: unifi-controller
         app.kubernetes.io/component: unifi-controller
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        {{- if .Values.unifiController.deploymentpodLabels }}
-        {{- toYaml .Values.unifiController.deploymentpodLabels | nindent 8}}
+        {{- if .Values.unifiController.deployment.podLabels }}
+        {{- toYaml .Values.unifiController.deployment.podLabels | nindent 8}}
         {{- end }}
     spec:
       {{- if .Values.unifiController.deploymentnodeSelector }}
       nodeSelector:
-        {{- toYaml .Values.unifiController.deploymentnodeSelector | nindent 8 }}
+        {{- toYaml .Values.unifiController.deployment.nodeSelector | nindent 8 }}
       {{- end }}
       containers:
       - name: unifi-controller
@@ -184,7 +184,7 @@ spec:
               {{- if .Values.secret.existingkey.enabled }}
               name: {{ .Values.secret.existingkey.name }}
               {{- else }}
-              name: {{ .Release.Name }}-mongo
+              name: {{ .Release.Name }}
               {{- end }}
               key: mongo-root-pass
         - name: MONGO_USER
