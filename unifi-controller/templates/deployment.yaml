@@ -85,6 +85,17 @@ spec:
           value: unifi
         - name: MONGO_AUTHSOURCE
           value: admin
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: root
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              {{- if .Values.secret.existingkey.enabled }}
+              name: {{ .Values.secret.existingkey.name }}
+              {{- else }}
+              name: {{ .Release.Name }}
+              {{- end }}
+              key: mongo-root-pass
         resources:
         {{- toYaml .Values.unifiController.deployment.resources | nindent 10 }}
         startupProbe:
