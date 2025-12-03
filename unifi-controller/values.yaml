@@ -43,16 +43,19 @@ unifiController:
     readinessProbe:
       tcpSocket:
         port: 8080
-      periodSeconds: 5
+      initialDelaySeconds: 5
+      periodSeconds: 10
       timeoutSeconds: 3
+      successThreshold: 1
       failureThreshold: 3
 
     livenessProbe:
       tcpSocket:
         port: 8080
-      initialDelaySeconds: 60
-      periodSeconds: 15
+      initialDelaySeconds: 15
+      periodSeconds: 20
       timeoutSeconds: 5
+      successThreshold: 1
       failureThreshold: 5
 
     initContainer:
@@ -90,31 +93,37 @@ mongo:
     startupProbe:
       exec:
         command:
-          - /bin/sh
-          - -c
-          - |
-            mongo --quiet \
-              -u "$MONGO_USER" \
-              -p "$MONGO_PASS" \
-              --authenticationDatabase "$MONGO_AUTHSOURCE" \
-              --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1
-      initialDelaySeconds: 10
+          - mongo
+          - --eval
+          - "db.runCommand({ ping: 1 })"
+      initialDelaySeconds: 5
       periodSeconds: 5
+      timeoutSeconds: 5
       failureThreshold: 30
 
     readinessProbe:
       tcpSocket:
-        port: 27017
-      periodSeconds: 5
+      exec:
+        command:
+          - mongo
+          - --eval
+          - "db.runCommand({ ping: 1 })"
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 5
       failureThreshold: 3
 
     livenessProbe:
       tcpSocket:
-        port: 27017
+      exec:
+        command:
+          - mongo
+          - --eval
+          - "db.runCommand({ ping: 1 })"
       initialDelaySeconds: 30
-      periodSeconds: 10
-      timeoutSeconds: 3
-      failureThreshold: 6
+      periodSeconds: 20
+      timeoutSeconds: 5
+      failureThreshold: 5
 
   service:
     labels: {}
