@@ -22,6 +22,7 @@ deployment:
 
 service:
     enabled: true
+    type: ClusterIP
     labels: []
     annotations: []
 
