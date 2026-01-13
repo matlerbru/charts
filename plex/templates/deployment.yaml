@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.deployment.annotations }}
+    {{- toYaml .Values.deployment.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: plex
+    app.kubernetes.io/component: plex
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- if .Values.deployment.labels }}
+    {{- toYaml .Values.deployment.labels | nindent 4}}
+    {{- end }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: plex
+      app.kubernetes.io/component: plex
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.deployment.podAnnotations }}
+        {{- toYaml .Values.deployment.podAnnotations | nindent 8}}
+        {{- end }}
+      labels:
+        app.kubernetes.io/name: plex
+        app.kubernetes.io/component: plex
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        {{- if .Values.deployment.podLabels }}
+        {{- toYaml .Values.deployment.podLabels | nindent 8}}
+        {{- end }}
+    spec:
+      {{- if .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: plex
+        image: lscr.io/linuxserver/plex:{{ .Chart.AppVersion }}
+        ports:
+        - name: web
+          containerPort: 32400
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: DK
+        - name: VERSION
+          value: docker
+        resources:
+        {{- toYaml .Values.deployment.resources | nindent 10 }}
+        startupProbe:
+        {{- toYaml .Values.deployment.startupProbe | nindent 10 }}
+        readinessProbe:
+        {{- toYaml .Values.deployment.readinessProbe | nindent 10 }}
+        livenessProbe:
+        {{- toYaml .Values.deployment.livenessProbe | nindent 10 }}
+        {{- if len .Values.volumes }}
+        volumeMounts:
+        {{- range  .Values.volumes }}
+        - name: {{ .name }}
+          mountPath: /library/{{ .name }}
+        {{- end }}
+        {{- end }}
+      {{- if hasKey .Values.deployment "tolerations" }}
+      tolerations:
+      {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if len .Values.volumes }}
+      volumes:
+      {{- range .Values.volumes }}
+      - name: {{ .name }}
+        persistentVolumeClaim:
+          claimName: {{ .claim }}
+      {{- end }}
+      {{- end }}
