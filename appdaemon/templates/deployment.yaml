@@ -21,7 +21,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: acockburn/appdaemon:latest
+        image: acockburn/appdaemon:{{ .Values.imageVersion }}
         env:
         {{- if hasKey .Values "homeAssistant" }}
         {{- if .Values.homeAssistant.token.secret }}

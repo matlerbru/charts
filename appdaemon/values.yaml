@@ -1,5 +1,7 @@
 tolerations: []
 
+imageVersion: "4.5.11"
+
 ingress:
     enabled: false
     annotations: []
