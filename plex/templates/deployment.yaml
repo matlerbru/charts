@@ -51,9 +51,9 @@ spec:
           containerPort: {{ .Values.plex.port }}
         env:
         - name: PUID
-          value: "1000"
+          value: "{{ .Values.plex.pu_id }}"
         - name: PGID
-          value: "1000"
+          value: "{{ .Values.plex.pg_id }}"
         - name: TZ
           value: "{{ .Values.plex.timeZone }}"
         - name: VERSION
@@ -93,7 +93,7 @@ spec:
             - sh
             - -c
             - |
-              chown -R 1000:1000 /config
+              chown -R "{{ .Values.plex.pu_id }}":"{{ .Values.plex.pg_id }}" /config
               chmod -R u+rwX,g+rwX /config
           volumeMounts:
             - name: config

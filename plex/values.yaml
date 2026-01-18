@@ -2,9 +2,11 @@
 plex:
   advertisementAddress: 
   timeZone: UTC
+  pu_id: 1000
+  pg_id: 1000
   port: 32400
   claimCode: 
-
+  
 deployment:
   labels:
   annotations:
@@ -48,6 +50,6 @@ persistence:
   annotations: {}
   labels: {}
 
-additionalVolumes: []
-# - name: 
-#   claim: 
+additionalVolumes: 
+- name: transmission
+  claim: tstack-transmission-jellyfin-data
