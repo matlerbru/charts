@@ -82,8 +82,8 @@ spec:
             mountPath: /config
         {{- end }}
         {{- range  .Values.additionalVolumes }}
-        - name: {{ .name }}
-          mountPath: /library/{{ .name }}
+          - name: {{ .name }}
+            mountPath: /library/{{ .name }}
         {{- end }}
       {{- if .Values.persistence.enabled }}
       initContainers:
