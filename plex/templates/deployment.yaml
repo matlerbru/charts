@@ -85,7 +85,6 @@ spec:
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
-      {{- if len .Values.additionalVolumes }}
       volumes:
       {{- if .Values.persistence.enabled }}
       - name: config
@@ -96,5 +95,4 @@ spec:
       - name: {{ .name }}
         persistentVolumeClaim:
           claimName: {{ .claim }}
-      {{- end }}
       {{- end }}
