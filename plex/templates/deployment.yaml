@@ -72,14 +72,14 @@ spec:
         {{- toYaml .Values.deployment.readinessProbe | nindent 10 }}
         livenessProbe:
         {{- toYaml .Values.deployment.livenessProbe | nindent 10 }}
-        {{- if len .Values.volumes }}
         volumeMounts:
+        {{- if .Values.persistence.enabled }}
           - name: config
             mountPath: /config
+        {{- end }}
         {{- range  .Values.additionalVolumes }}
         - name: {{ .name }}
           mountPath: /library/{{ .name }}
-        {{- end }}
         {{- end }}
       {{- if hasKey .Values.deployment "tolerations" }}
       tolerations:
@@ -87,9 +87,11 @@ spec:
       {{- end }}
       {{- if len .Values.volumes }}
       volumes:
+      {{- if .Values.persistence.enabled }}
       - name: config
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-config
+      {{- end }}
       {{- range .Values.additionalVolumes }}
       - name: {{ .name }}
         persistentVolumeClaim:
