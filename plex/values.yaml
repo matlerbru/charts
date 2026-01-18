@@ -3,6 +3,7 @@ plex:
   advertisementAddress: 
   timeZone: UTC
   port: 32400
+  claimCode: 
 
 deployment:
   labels:

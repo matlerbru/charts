@@ -64,6 +64,10 @@ spec:
         - name: PLEX_PUBLISHED_SERVER_URL
           value: "http://{{ .Values.plex.advertisementAddress }}:{{ .Values.plex.port }}"
         {{- end }}
+        {{- if .Values.plex.claimCode }}
+        - name: PLEX_CLAIM
+          value: {{ .Values.plex.claimCode }}
+        {{- end }}
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
         startupProbe:
