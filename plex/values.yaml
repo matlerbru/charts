@@ -1,4 +1,9 @@
 
+plex:
+  advertisementAddress: 
+  timeZone: UTC
+  port: 32400
+
 deployment:
   labels:
   annotations:
@@ -22,7 +27,7 @@ deployment:
 
 service:
     enabled: true
-    type: ClusterIP
+    type: LoadBalancer
     labels: []
     annotations: []
 
@@ -33,6 +38,15 @@ ingress:
   labels: {}
   annotations: {}
 
-volumes: []
+persistence:
+  enabled: true
+  storageClass: ""
+  size: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  annotations: {}
+  labels: {}
+
+additionalVolumes: []
 # - name: 
 #   claim: 

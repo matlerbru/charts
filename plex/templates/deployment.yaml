@@ -48,16 +48,22 @@ spec:
         image: lscr.io/linuxserver/plex:{{ .Chart.AppVersion }}
         ports:
         - name: web
-          containerPort: 32400
+          containerPort: {{ .Values.plex.port }}
         env:
         - name: PUID
           value: "1000"
         - name: PGID
           value: "1000"
         - name: TZ
-          value: DK
+          value: "{{ .Values.plex.timeZone }}"
         - name: VERSION
           value: docker
+        {{ - if .Values.plex.advertisementAddress }}
+        - name: ADVERTISE_IP
+          value: "http://{{ .Values.plex.advertisementAddress }}:{{ .Values.plex.port }}"
+        - name: PLEX_PUBLISHED_SERVER_URL
+          value: "http://{{ .Values.plex.advertisementAddress }}:{{ .Values.plex.port }}"
+        {{ - end }}
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
         startupProbe:
@@ -68,7 +74,9 @@ spec:
         {{- toYaml .Values.deployment.livenessProbe | nindent 10 }}
         {{- if len .Values.volumes }}
         volumeMounts:
-        {{- range  .Values.volumes }}
+          - name: config
+            mountPath: /config
+        {{- range  .Values.additionalVolumes }}
         - name: {{ .name }}
           mountPath: /library/{{ .name }}
         {{- end }}
@@ -79,7 +87,10 @@ spec:
       {{- end }}
       {{- if len .Values.volumes }}
       volumes:
-      {{- range .Values.volumes }}
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config
+      {{- range .Values.additionalVolumes }}
       - name: {{ .name }}
         persistentVolumeClaim:
           claimName: {{ .claim }}
