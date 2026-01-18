@@ -58,12 +58,12 @@ spec:
           value: "{{ .Values.plex.timeZone }}"
         - name: VERSION
           value: docker
-        {{ - if .Values.plex.advertisementAddress }}
+        {{- if .Values.plex.advertisementAddress }}
         - name: ADVERTISE_IP
           value: "http://{{ .Values.plex.advertisementAddress }}:{{ .Values.plex.port }}"
         - name: PLEX_PUBLISHED_SERVER_URL
           value: "http://{{ .Values.plex.advertisementAddress }}:{{ .Values.plex.port }}"
-        {{ - end }}
+        {{- end }}
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
         startupProbe:
