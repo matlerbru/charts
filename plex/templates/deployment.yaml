@@ -85,7 +85,7 @@ spec:
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
-      {{- if len .Values.volumes }}
+      {{- if len .Values.additionalVolumes }}
       volumes:
       {{- if .Values.persistence.enabled }}
       - name: config
