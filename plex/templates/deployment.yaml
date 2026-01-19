@@ -49,6 +49,20 @@ spec:
         ports:
         - name: web
           containerPort: {{ .Values.plex.port }}
+        {{- if .Values.plex.gdm_ports }}
+        - containerPort: 32410
+          name: gdm-1
+          protocol: UDP
+        - containerPort: 32412
+          name: gdm-2
+          protocol: UDP
+        - containerPort: 32413
+          name: gdm-3
+          protocol: UDP
+        - containerPort: 32414
+          name: gdm-4
+          protocol: UDP
+        {{- end }}
         env:
         - name: PUID
           value: "{{ .Values.plex.pu_id }}"

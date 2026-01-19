@@ -28,4 +28,22 @@ spec:
       protocol: TCP
       port: {{ .Values.plex.port }}
       targetPort: web
+    {{- if .Values.plex.gdm_ports }}
+    - name: gdm-1
+      port: 32410
+      protocol: UDP
+      targetPort: gdm-1
+    - name: gdm-2
+      port: 32412
+      protocol: UDP
+      targetPort: gdm-2
+    - name: gdm-3
+      port: 32413
+      protocol: UDP
+      targetPort: gdm-3
+    - name: gdm-4
+      port: 32414
+      protocol: UDP
+      targetPort: gdm-4
+    {{- end }}
 {{- end }}
