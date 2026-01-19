@@ -13,6 +13,8 @@ deployment:
   annotations:
   podLabels: {}
   podAnnotations: {}
+  env: []
+
 
   resources:
     requests:

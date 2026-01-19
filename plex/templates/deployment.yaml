@@ -82,6 +82,9 @@ spec:
         - name: PLEX_CLAIM
           value: {{ .Values.plex.claimCode }}
         {{- end }}
+{{- if .Values.deployment.env }}
+{{- .Values.deployment.env | toYaml | nindent 8 }}
+{{- end }}
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
         startupProbe:
