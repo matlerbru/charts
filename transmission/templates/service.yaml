@@ -1,0 +1,34 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.annotations }}
+    {{- toYaml .Values.service.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels | nindent 4}}
+    {{- end }}
+spec:
+  selector:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+  type: {{ .Values.service.transmission.type }}
+  {{- end }}{{ end }}{{ end }}
+  ports:
+    - name: rpc
+      port: 9091
+      targetPort: rpc
+      {{ if hasKey .Values "service" }}
+      {{ if hasKey .Values.service "transmission" }}
+      {{- if .Values.service.transmission.nodePort }}
+      nodePort: {{ .Values.service.transmission.nodePort }}
+      {{- end }}{{ end }}{{ end }}
+{{- end }}

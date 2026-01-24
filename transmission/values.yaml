@@ -1,0 +1,45 @@
+
+
+deployment:
+  annotations: {}
+  labels: {}
+  podAnnotations: {}
+  podLabels: {}
+
+service:
+  enabled: true
+  type: LoadBalancer
+  labels: {}
+  annotations: {}
+
+ingress:
+  enabled: false
+  hostname: ""
+  ingressClass: ""
+  labels: {}
+  annotations: {}
+
+openvpn:
+  # Find at:
+  # https://haugene.github.io/docker-transmission-openvpn/supported-providers/
+  provider: ""
+  config: ""
+
+persistence:
+  enabled: true
+  config:
+    enabled: true
+    storageClass: ""
+    size: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}
+  data:
+    enabled: true
+    storageClass: ""
+    size: 2000Gi
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    labels: {}

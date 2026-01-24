@@ -1,0 +1,57 @@
+{{- if .Values.config.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.config.persistence.annotations }}
+    {{- toYaml .Values.config.persistence.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/component: config
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- if .Values.config.persistence.labels }}
+    {{- toYaml .Values.config.persistence.labels | nindent 4}}
+    {{- end }}
+spec:
+  accessModes:
+  {{- range $mode := .Values.config.persistence.accessModes }}
+    - {{ $mode }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.config.persistence.size }} 
+  storageClassName: {{ .Values.config.persistence.storageClass }}
+{{- end }}
+---
+{{- if .Values.data.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-data
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.data.persistence.annotations }}
+    {{- toYaml .Values.data.persistence.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/component: data
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- if .Values.data.persistence.labels }}
+    {{- toYaml .Values.data.persistence.labels | nindent 4}}
+    {{- end }}
+spec:
+  accessModes:
+  {{- range $mode := .Values.data.persistence.accessModes }}
+    - {{ $mode }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.data.persistence.size }} 
+  storageClassName: {{ .Values.data.persistence.storageClass }}
+{{- end }}

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.deployment.annotations }}
+    {{- toYaml .Values.deployment.annotations | nindent 4}}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: plex
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- if .Values.deployment.labels }}
+    {{- toYaml .Values.deployment.labels | nindent 4}}
+    {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: plex
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+  template:
+    metadata:
+      annotations:
+        {{- if .Values.deployment.podAnnotations }}
+        {{- toYaml .Values.deployment.podAnnotations | nindent 8}}
+        {{- end }}
+      labels:
+        app.kubernetes.io/name: plex
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        {{- if .Values.deployment.podLabels }}
+        {{- toYaml .Values.deployment.podLabels | nindent 8}}
+        {{- end }}
+    spec:
+      containers:
+        - name: transmission
+          image: haugene/transmission-openvpn:{{ .Chart.appVersion }}
+          ports:
+            - name: rpc 
+              containerPort: 9091
+          env:
+            - name: OPENVPN_PROVIDER
+              value: "{{ .Values.openvpn.provider }}"
+            - name: OPENVPN_CONFIG
+              value: "{{ .Values.openvpn.config }}"
+            - name: OPENVPN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-credentials
+                  key: username
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-credentials
+                  key: password
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            capabilities:
+              add: ["NET_ADMIN", "NET_RAW"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ .Release.Name }}-data"
+        - name: config
+          persistentVolumeClaim:
+            claimName: "{{ .Release.Name }}-config"
