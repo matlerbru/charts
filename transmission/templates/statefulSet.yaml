@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: transmission
-          image: haugene/transmission-openvpn:{{ .Chart.appVersion }}
+          image: haugene/transmission-openvpn:{{ .Chart.AppVersion | quote }}
           ports:
             - name: rpc 
               containerPort: 9091

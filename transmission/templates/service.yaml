@@ -20,14 +20,14 @@ spec:
     app.kubernetes.io/name: transmission
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-  type: {{ .Values.service.transmission.type }}
+  type: {{ .Values.service.type }}
   ports:
     - name: rpc
       port: 9091
       targetPort: rpc
       {{ if hasKey .Values "service" }}
       {{ if hasKey .Values.service "transmission" }}
-      {{- if .Values.service.transmission.nodePort }}
-      nodePort: {{ .Values.service.transmission.nodePort }}
+      {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
       {{- end }}{{ end }}{{ end }}
 {{- end }}

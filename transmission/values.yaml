@@ -26,7 +26,6 @@ openvpn:
   config: ""
 
 persistence:
-  enabled: true
   config:
     enabled: true
     storageClass: ""
