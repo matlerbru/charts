@@ -21,7 +21,6 @@ spec:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
   type: {{ .Values.service.transmission.type }}
-  {{- end }}{{ end }}{{ end }}
   ports:
     - name: rpc
       port: 9091
