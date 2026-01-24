@@ -8,7 +8,7 @@ metadata:
     {{- toYaml .Values.statfulset.annotations | nindent 4}}
     {{- end }}
   labels:
-    app.kubernetes.io/name: plex
+    app.kubernetes.io/name: transmission
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     {{- if .Values.statfulset.labels }}
@@ -18,7 +18,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: plex
+      app.kubernetes.io/name: transmission
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
   template:
@@ -28,7 +28,7 @@ spec:
         {{- toYaml .Values.statfulset.podAnnotations | nindent 8}}
         {{- end }}
       labels:
-        app.kubernetes.io/name: plex
+        app.kubernetes.io/name: transmission
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
         {{- if .Values.statfulset.podLabels }}
