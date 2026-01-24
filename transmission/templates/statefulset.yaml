@@ -4,15 +4,15 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if .Values.deployment.annotations }}
-    {{- toYaml .Values.deployment.annotations | nindent 4}}
+    {{- if .Values.statfulset.annotations }}
+    {{- toYaml .Values.statfulset.annotations | nindent 4}}
     {{- end }}
   labels:
     app.kubernetes.io/name: plex
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    {{- if .Values.deployment.labels }}
-    {{- toYaml .Values.deployment.labels | nindent 4}}
+    {{- if .Values.statfulset.labels }}
+    {{- toYaml .Values.statfulset.labels | nindent 4}}
     {{- end }}
 spec:
   replicas: 1
@@ -24,15 +24,15 @@ spec:
   template:
     metadata:
       annotations:
-        {{- if .Values.deployment.podAnnotations }}
-        {{- toYaml .Values.deployment.podAnnotations | nindent 8}}
+        {{- if .Values.statfulset.podAnnotations }}
+        {{- toYaml .Values.statfulset.podAnnotations | nindent 8}}
         {{- end }}
       labels:
         app.kubernetes.io/name: plex
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        {{- if .Values.deployment.podLabels }}
-        {{- toYaml .Values.deployment.podLabels | nindent 8}}
+        {{- if .Values.statfulset.podLabels }}
+        {{- toYaml .Values.statfulset.podLabels | nindent 8}}
         {{- end }}
     spec:
       containers:
@@ -66,6 +66,8 @@ spec:
               mountPath: /data
             - name: config
               mountPath: /config
+      nodeSelector: 
+{{- .Values.statfulset.nodeSelector | toYaml | nindent 8 }}
       volumes:
         - name: data
           persistentVolumeClaim:
