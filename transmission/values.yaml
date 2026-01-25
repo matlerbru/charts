@@ -5,7 +5,9 @@ statfulset:
   labels: {}
   podAnnotations: {}
   podLabels: {}
-  nodeSelector: {}
+  nodeSelector:
+  tolerations:
+
 
 service:
   enabled: true

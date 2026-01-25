@@ -66,8 +66,14 @@ spec:
               mountPath: /data
             - name: config
               mountPath: /config
+      {{- if .Values.statfulset.nodeSelector }}
       nodeSelector: 
 {{- .Values.statfulset.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.statfulset.nodeSelector }}
+      tolerations:
+{{- .Values.statfulset.tolerations | toYaml | nindent 8 }}
+      {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
