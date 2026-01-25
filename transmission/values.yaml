@@ -1,13 +1,11 @@
 
-
-statfulset:
+statefulset:
   annotations: {}
   labels: {}
   podAnnotations: {}
   podLabels: {}
   nodeSelector:
   tolerations:
-
 
 service:
   enabled: true

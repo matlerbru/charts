@@ -4,15 +4,15 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    {{- if .Values.statfulset.annotations }}
-    {{- toYaml .Values.statfulset.annotations | nindent 4}}
+    {{- if .Values.statefulset.annotations }}
+    {{- toYaml .Values.statefulset.annotations | nindent 4}}
     {{- end }}
   labels:
     app.kubernetes.io/name: transmission
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    {{- if .Values.statfulset.labels }}
-    {{- toYaml .Values.statfulset.labels | nindent 4}}
+    {{- if .Values.statefulset.labels }}
+    {{- toYaml .Values.statefulset.labels | nindent 4}}
     {{- end }}
 spec:
   replicas: 1
@@ -24,15 +24,15 @@ spec:
   template:
     metadata:
       annotations:
-        {{- if .Values.statfulset.podAnnotations }}
-        {{- toYaml .Values.statfulset.podAnnotations | nindent 8}}
+        {{- if .Values.statefulset.podAnnotations }}
+        {{- toYaml .Values.statefulset.podAnnotations | nindent 8}}
         {{- end }}
       labels:
         app.kubernetes.io/name: transmission
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        {{- if .Values.statfulset.podLabels }}
-        {{- toYaml .Values.statfulset.podLabels | nindent 8}}
+        {{- if .Values.statefulset.podLabels }}
+        {{- toYaml .Values.statefulset.podLabels | nindent 8}}
         {{- end }}
     spec:
       containers:
@@ -66,13 +66,13 @@ spec:
               mountPath: /data
             - name: config
               mountPath: /config
-      {{- if .Values.statfulset.nodeSelector }}
+      {{- if .Values.statefulset.nodeSelector }}
       nodeSelector: 
-{{- .Values.statfulset.nodeSelector | toYaml | nindent 8 }}
+{{- .Values.statefulset.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
-      {{- if .Values.statfulset.nodeSelector }}
+      {{- if .Values.statefulset.nodeSelector }}
       tolerations:
-{{- .Values.statfulset.tolerations | toYaml | nindent 8 }}
+{{- .Values.statefulset.tolerations | toYaml | nindent 8 }}
       {{- end }}
       volumes:
         - name: data
