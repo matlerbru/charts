@@ -21,7 +21,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: koenkk/zigbee2mqtt
+        image: koenkk/zigbee2mqtt:{{ .Values.image.tag }}
         env:
         - name: TZ
           value: {{ .Values.timeZone }}

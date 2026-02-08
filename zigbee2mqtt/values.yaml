@@ -1,4 +1,7 @@
 
+image:
+  tag: "2.6.3"
+
 timeZone: Europe/Copenhagen
 
 zigbee: 
