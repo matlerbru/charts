@@ -15,7 +15,6 @@ deployment:
   podAnnotations: {}
   env: []
 
-
   resources:
     requests:
       cpu: 250m
