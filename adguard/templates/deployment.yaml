@@ -50,8 +50,12 @@ spec:
           containerPort: 80
         - name: http-initial 
           containerPort: 3000
-        - name: dns
-          containerPort: 53 
+        - name: dns-tcp
+          containerPort: 53
+          protocol: TCP
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
         volumeMounts:
         {{- if .Values.persistence.work.enabled }}
         - name: work

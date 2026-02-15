@@ -1,4 +1,4 @@
-{{- if .Values.service.loadBalancer.enabled }}
+{{- if .Values.service.clusterIp.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -44,7 +44,7 @@ metadata:
     app.kubernetes.io/name: adguard
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    {{- if .Values.service.loadBalancer.abels }}
+    {{- if .Values.service.loadBalancer.labels }}
     {{- toYaml .Values.service.loadBalancer.labels | nindent 4 }}
     {{- end }}
 spec:
@@ -53,8 +53,12 @@ spec:
     app.kubernetes.io/instance: {{ .Release.Name }}
   type: LoadBalancer
   ports:
-  - protocol: UDP
+  - name: dns-udp
+    protocol: UDP
     port: 53
-    targetPort: dns
-    name: dns
+    targetPort: dns-udp
+  - name: dns-tcp
+    protocol: TCP
+    port: 53
+    targetPort: dns-tcp
 {{- end }}
