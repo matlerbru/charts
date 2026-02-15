@@ -65,15 +65,23 @@ spec:
         - name: config
           mountPath: /opt/adguardhome/conf
         {{- end }}
+        {{- if .Values.deployment.resources }}
         resources:
         {{- toYaml .Values.deployment.resources | nindent 10 }}
+        {{- end }}
+        {{- if .Values.deployment.startupProbe }}
         startupProbe:
         {{- toYaml .Values.deployment.startupProbe | nindent 10 }}
+        {{- end }}
+        {{- if .Values.deployment.readinessProbe }}
         readinessProbe:
         {{- toYaml .Values.deployment.readinessProbe | nindent 10 }}
+        {{- end }}
+        {{- if .Values.deployment.livenessProbe }}
         livenessProbe:
         {{- toYaml .Values.deployment.livenessProbe | nindent 10 }}
-      {{- if hasKey .Values.deployment "tolerations" }}
+        {{- end }}
+      {{- if (and (hasKey .Values.deployment "tolerations") (gt 0 (len .Values.deployment.tolerations))) }}
       tolerations:
       {{- .Values.deployment.tolerations | toYaml | nindent 8 }}
       {{- end }}
