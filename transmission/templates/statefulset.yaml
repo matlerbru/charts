@@ -56,6 +56,8 @@ spec:
                 secretKeyRef:
                   name: transmission-credentials
                   key: password
+            - name: LOCAL_NETWORK
+              value: "{{ join "," .Values.openvpn.localNetwork }}"
           securityContext:
             privileged: true
             runAsUser: 0

@@ -25,6 +25,8 @@ openvpn:
   # https://haugene.github.io/docker-transmission-openvpn/supported-providers/
   provider: ""
   config: ""
+  localNetwork: 
+  - 10.0.0.0/8
 
 persistence:
   config:
