@@ -14,6 +14,7 @@ deployment:
   podLabels: {}
   podAnnotations: {}
   env: []
+  hostNetwork: false
 
   resources:
     requests:

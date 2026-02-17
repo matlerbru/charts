@@ -43,6 +43,7 @@ spec:
       nodeSelector:
         {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
+      hostNetwork: {{ .Values.deployment.hostNetwork }}
       containers:
       - name: plex
         image: lscr.io/linuxserver/plex:{{ .Chart.AppVersion }}
