@@ -1,12 +1,12 @@
-name: Build helm package
-run-name: ${{ github.actor }} is testing out github Actions 🚀
+name: Build helm chart
+run-name: Build helm chart
 on: [push]
 
 jobs:
   push-chart:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
     steps:
+
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: List files in the repository
@@ -25,4 +25,4 @@ jobs:
         run: helm package ./${GITHUB_REF##*/}
 
       - name: Push helm chart to registry
-        run: helm push ${GITHUB_REF##*/}-$(helm show chart ${GITHUB_REF##*/} | grep version | cut -d' ' -f2-).tgz oci://ghcr.io/matlerbru/charts
+        run: helm push ${GITHUB_REF##*/}-$(helm show chart ${GITHUB_REF##*/} | grep version | cut -d' ' -f2-).tgz oci://ghcr.io/mbrunhoej/charts
