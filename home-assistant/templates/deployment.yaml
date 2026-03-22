@@ -21,7 +21,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: linuxserver/homeassistant
+        image: linuxserver/homeassistant:{{ .Values.image.tag }}
         env:
         - name: PUID
           value: "0"

@@ -1,3 +1,7 @@
+
+image:
+    tag: latest
+
 persistence:
     enabled: true
     storageClass: ""
