@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: adguard-home
+        image: adguard/adguardhome:latest
+        volumeMounts:
+        - name: work
+          mountPath: /opt/adguardhome/work
+        - name: config
+          mountPath: /opt/adguardhome/conf
+      volumes:
+      - name: work
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-work
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config

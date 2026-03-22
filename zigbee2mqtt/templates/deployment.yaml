@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: koenkk/zigbee2mqtt
+        env:
+        - name: TZ
+          value: {{ .Values.timeZone }}
+        - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
+          value: mqtt://{{ .Values.mqtt.address }}:{{ .Values.mqtt.port }}
+        {{- if hasKey .Values.zigbee "serial" }}
+        - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
+          value: {{ .Values.zigbee.serial.port }}
+        - name: ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE
+          value: {{ .Values.zigbee.serial.baudrate | quote }}
+        {{- else if hasKey .Values.zigbee "network" }}
+        - name: ZIGBEE2MQTT_CONFIG_SERIAL_PORT
+          value: tcp://{{ .Values.zigbee.network.address }}:{{ .Values.zigbee.network.port }}
+        {{- end }}
+        - name: ZIGBEE2MQTT_CONFIG_ADVANCED_TRANSMIT_POWER
+          value: "20"
+        - name: ZIGBEE2MQTT_CONFIG_ADVANCED_ADAPTER_DELAY
+          value: {{ .Values.adapterDelay | quote }}
+        volumeMounts:
+        {{- if hasKey .Values.zigbee "serial" }}
+        - name: {{ .Release.Name }}-udev    
+          mountPath: /run/udev
+        - name: serial
+          mountPath: {{ .Values.zigbee.serial.port }}
+        {{- end }}
+        - name: data
+          mountPath: /app/data
+        securityContext:
+          privileged: true
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+      {{- .Values.tolerations | toYaml | nindent 8 }}
+      {{- end }}
+      volumes:
+      {{- if hasKey .Values.zigbee "serial" }}
+      - name: {{ .Release.Name }}-udev
+        hostPath:
+          path: /run/udev
+      - name: serial
+        hostPath:
+          path: {{ .Values.zigbee.serial.port }}
+      {{- end }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data
+{{- if and .Values.zigbee.serial .Values.zigbee.network }}
+{{- fail "Only one of .Values.zigbee.serial or .Values.zigbee.network should be specified, not both." }}
+{{- end }}

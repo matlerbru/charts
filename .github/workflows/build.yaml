@@ -1,5 +1,5 @@
-name: Build helm package
-run-name: ${{ github.actor }} is testing out github Actions 🚀
+name: Build helm chart
+run-name: Build helm chart
 on: [push]
 
 jobs:

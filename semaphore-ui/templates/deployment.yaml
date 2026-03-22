@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: semaphore-ui
+        image: semaphoreui/semaphore:v2.10.32
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/semaphore
+        - name: config
+          mountPath: /etc/semaphore
+        env:
+        - name: SEMAPHORE_DB_DIALECT
+          value: bolt
+        - name: SEMAPHORE_INTERFACE
+          value: 0.0.0.0
+        - name: SEMAPHORE_WEB_ROOT
+          value: http://{{ .Values.hostname }}
+        - name: SEMAPHORE_ADMIN_NAME
+          value: admin
+        - name: SEMAPHORE_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: username
+        - name: SEMAPHORE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: password
+        - name: SEMAPHORE_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-credentials
+              key: email
+        command: 
+            - sh
+            - "-c"
+            - |
+              {{- if (hasKey .Values "pipPackages") }}
+              python -m pip install {{ range .Values.pipPackages }}{{ . }} {{ end }}
+              {{- end }}
+              semaphore server
+      initContainers:
+        - name: init-permissions
+          image: busybox:latest
+          command:
+            - sh
+            - "-c"
+            - |
+              chown 1001:1001 /var/lib/samaphore
+              chmod 755 /var/lib/samaphore
+              chown 1001:1001 /etc/semaphore
+              chmod 755 /etc/semaphore
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/samaphore
+            - name: config
+              mountPath: /etc/semaphore
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config

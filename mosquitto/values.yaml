@@ -1,0 +1,8 @@
+
+tolerations: []
+
+persistentVolumeClaim:
+    storageClass: ""
+    size: 1Gi
+
+config: ""

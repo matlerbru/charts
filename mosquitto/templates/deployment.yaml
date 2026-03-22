@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: eclipse-mosquitto
+        volumeMounts:
+        - name: data  
+          mountPath: /mosquitto/data
+        - name: config
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data
+      - name: config
+        configMap:
+          name: {{ .Release.Name }}

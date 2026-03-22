@@ -1,0 +1,12 @@
+
+hostname: adguard.priv
+
+persistentVolumeClaim:
+  config:
+    storageClass: ""
+    size: 1Gi
+  work:
+    storageClass: ""
+    size: 1Gi
+
+
